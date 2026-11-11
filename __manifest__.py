@@ -14,6 +14,7 @@
         "security/ir.model.access.csv",
         "views/prospecting_profile_views.xml",
         "views/utm_campaign_views.xml",
+        "views/utm_stage_views.xml",
         "views/crm_lead_views.xml",
         "views/crm_prospecting_menus.xml",
     ],
