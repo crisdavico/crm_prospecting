@@ -16,7 +16,11 @@
                     <group>
                         <group>
                             <field name="prospecting_profile_id" string="Profile" />
-                            <field name="prospecting_industry" string="Industry" />
+                            <field
+                                name="prospecting_industry_id"
+                                string="Industry"
+                                options="{'no_create': True}"
+                            />
                             <field
                                 name="prospecting_company_size"
                                 string="Company Size"
@@ -28,9 +32,16 @@
                         </group>
                         <group>
                             <field
+                                name="prospecting_country_id"
+                                string="Country"
+                                options="{'no_create': True}"
+                            />
+                            <field
                                 name="prospecting_state_ids"
                                 string="States"
                                 widget="many2many_tags"
+                                domain="[('country_id', '=?', prospecting_country_id)]"
+                                options="{'no_create': True}"
                             />
                             <field name="prospecting_city" string="City" />
                         </group>
@@ -42,6 +53,25 @@
                     />
                 </page>
             </xpath>
+        </field>
+    </record>
+
+    <record id="utm_campaign_view_search" model="ir.ui.view">
+        <field name="name">utm.campaign.view.search.prospecting</field>
+        <field name="model">utm.campaign</field>
+        <field name="inherit_id" ref="utm.view_utm_campaign_view_search" />
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="prospecting_country_id" />
+                <field name="prospecting_industry_id" />
+            </field>
+            <filter name="group_tags_id" position="after">
+                <filter
+                    string="Country"
+                    name="group_prospecting_country_id"
+                    context="{'group_by': 'prospecting_country_id'}"
+                />
+            </filter>
         </field>
     </record>
 </odoo>

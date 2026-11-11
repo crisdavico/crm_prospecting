@@ -16,17 +16,18 @@ class TestProspectingFields(TransactionCase):
         cls.profile = cls.env["prospecting.profile"].create(
             {"name": "Test profile", "product_id": product.id}
         )
-        cls.states = cls.env["res.country.state"].search(
-            [("country_id.code", "=", "AR")], limit=2
-        )
+        cls.argentina = cls.env.ref("base.ar")
+        cls.states = cls.env.ref("base.state_ar_b") | cls.env.ref("base.state_ar_c")
+        cls.us_state = cls.env.ref("base.state_us_1")
+        cls.industry = cls.env["res.partner.industry"].create({"name": "Auto parts"})
         cls.campaign = cls.env["utm.campaign"].create({"title": "Prospecting test"})
 
     def test_campaign_brief_round_trip(self):
-        self.assertEqual(len(self.states), 2, "base ships Argentine states")
         self.campaign.write(
             {
                 "prospecting_profile_id": self.profile.id,
-                "prospecting_industry": "Auto parts",
+                "prospecting_industry_id": self.industry.id,
+                "prospecting_country_id": self.argentina.id,
                 "prospecting_state_ids": [(6, 0, self.states.ids)],
                 "prospecting_city": "Rosario",
                 "prospecting_company_size": "10-50 employees",
@@ -37,12 +38,73 @@ class TestProspectingFields(TransactionCase):
         self.env.invalidate_all()
         campaign = self.env["utm.campaign"].browse(self.campaign.id)
         self.assertEqual(campaign.prospecting_profile_id, self.profile)
-        self.assertEqual(campaign.prospecting_industry, "Auto parts")
+        self.assertEqual(campaign.prospecting_industry_id, self.industry)
+        self.assertEqual(campaign.prospecting_country_id, self.argentina)
         self.assertEqual(campaign.prospecting_state_ids, self.states)
         self.assertEqual(campaign.prospecting_city, "Rosario")
         self.assertEqual(campaign.prospecting_company_size, "10-50 employees")
         self.assertEqual(campaign.prospecting_target_count, 25)
         self.assertEqual(campaign.prospecting_instructions, "Skip current customers.")
+
+    def test_industry_is_the_partner_industry(self):
+        field = self.env["utm.campaign"]._fields["prospecting_industry_id"]
+        self.assertEqual(field.comodel_name, "res.partner.industry")
+        self.assertEqual(
+            field.comodel_name,
+            self.env["res.partner"]._fields["industry_id"].comodel_name,
+        )
+        self.campaign.prospecting_industry_id = self.industry
+        self.env.invalidate_all()
+        self.assertEqual(
+            self.env["utm.campaign"]
+            .browse(self.campaign.id)
+            .prospecting_industry_id.name,
+            "Auto parts",
+        )
+
+    def test_country_round_trip_and_search(self):
+        self.campaign.prospecting_country_id = self.argentina
+        self.env.invalidate_all()
+        self.assertEqual(
+            self.env["utm.campaign"].search(
+                [("prospecting_country_id", "=", self.argentina.id)]
+            ),
+            self.campaign,
+        )
+
+    def test_state_from_other_country_rejected(self):
+        self.campaign.write(
+            {
+                "prospecting_country_id": self.argentina.id,
+                "prospecting_state_ids": [(6, 0, self.states.ids)],
+            }
+        )
+        with self.assertRaises(ValidationError):
+            self.campaign.write({"prospecting_state_ids": [(4, self.us_state.id)]})
+        with self.assertRaises(ValidationError):
+            self.env["utm.campaign"].create(
+                {
+                    "title": "Mixed states",
+                    "prospecting_country_id": self.argentina.id,
+                    "prospecting_state_ids": [(6, 0, self.us_state.ids)],
+                }
+            )
+        self.assertEqual(self.campaign.prospecting_state_ids, self.states)
+        self.assertFalse(
+            self.env["utm.campaign"].search([("title", "=", "Mixed states")])
+        )
+
+    def test_changing_country_away_from_states_rejected(self):
+        self.campaign.write({"prospecting_state_ids": [(6, 0, self.states.ids)]})
+        with self.assertRaises(ValidationError):
+            self.campaign.write({"prospecting_country_id": self.env.ref("base.us").id})
+        self.assertFalse(self.campaign.prospecting_country_id)
+
+    def test_states_accepted_without_country(self):
+        states = self.states | self.us_state
+        self.campaign.write({"prospecting_state_ids": [(6, 0, states.ids)]})
+        self.assertFalse(self.campaign.prospecting_country_id)
+        self.assertEqual(self.campaign.prospecting_state_ids, states)
 
     def test_lead_fields_round_trip(self):
         lead = self.env["crm.lead"].create(

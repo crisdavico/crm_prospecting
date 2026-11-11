@@ -1,7 +1,8 @@
 # Copyright 2026 Seedian
 # License AGPL-3.0-or-later (https://www.gnu.org/licenses/agpl-3.0.html).
 
-from odoo import fields, models
+from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class UtmCampaign(models.Model):
@@ -13,8 +14,13 @@ class UtmCampaign(models.Model):
         comodel_name="prospecting.profile",
         help="Product and ideal customer profile this campaign prospects for.",
     )
-    prospecting_industry = fields.Char(
-        help="Industry or sector of the companies to look for.",
+    prospecting_industry_id = fields.Many2one(
+        comodel_name="res.partner.industry",
+        help="Industry of the companies to look for, as set on contacts.",
+    )
+    prospecting_country_id = fields.Many2one(
+        comodel_name="res.country",
+        help="Country where the companies should be.",
     )
     prospecting_state_ids = fields.Many2many(
         comodel_name="res.country.state",
@@ -36,3 +42,23 @@ class UtmCampaign(models.Model):
     prospecting_instructions = fields.Text(
         help="Extra instructions and exclusions for the agent.",
     )
+
+    @api.constrains("prospecting_country_id", "prospecting_state_ids")
+    def _check_prospecting_states_country(self):
+        for campaign in self:
+            country = campaign.prospecting_country_id
+            if not country:
+                continue
+            foreign = campaign.prospecting_state_ids.filtered(
+                lambda state, country=country: state.country_id != country
+            )
+            if foreign:
+                raise ValidationError(
+                    self.env._(
+                        "The prospecting states of campaign %(campaign)s must belong "
+                        "to %(country)s. These do not: %(states)s.",
+                        campaign=campaign.display_name,
+                        country=country.name,
+                        states=", ".join(foreign.mapped("name")),
+                    )
+                )
