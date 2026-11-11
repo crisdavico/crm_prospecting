@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 Seedian
+     License AGPL-3.0-or-later (https://www.gnu.org/licenses/agpl-3.0.html). -->
+<odoo>
+    <!-- CRM > Prospecting: between Leads (5) and Reporting (20). -->
+    <menuitem
+        id="prospecting_menu_root"
+        name="Prospecting"
+        parent="crm.crm_menu_root"
+        sequence="10"
+        groups="sales_team.group_sale_salesman"
+    />
+    <!-- The utm action is reused as is: list, kanban and form, no domain. -->
+    <menuitem
+        id="prospecting_campaign_menu"
+        name="Campaigns"
+        parent="prospecting_menu_root"
+        action="utm.utm_campaign_action"
+        sequence="1"
+        groups="sales_team.group_sale_salesman"
+    />
+    <menuitem
+        id="prospecting_profile_menu"
+        name="Profiles"
+        parent="prospecting_menu_root"
+        action="prospecting_profile_action"
+        sequence="2"
+        groups="sales_team.group_sale_salesman"
+    />
+</odoo>

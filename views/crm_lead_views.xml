@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 Seedian
+     License AGPL-3.0-or-later (https://www.gnu.org/licenses/agpl-3.0.html). -->
+<odoo>
+    <record id="crm_lead_view_form" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.prospecting</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Prospecting" name="prospecting">
+                    <group>
+                        <group>
+                            <field name="prospecting_fit_score" string="Fit Score" />
+                            <field name="prospecting_cuit" string="CUIT" />
+                            <field name="prospecting_run_ref" string="Run Reference" />
+                        </group>
+                    </group>
+                    <label for="prospecting_evidence" string="Evidence" />
+                    <field name="prospecting_evidence" />
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

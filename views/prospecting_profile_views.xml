@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 Seedian
+     License AGPL-3.0-or-later (https://www.gnu.org/licenses/agpl-3.0.html). -->
+<odoo>
+    <record id="prospecting_profile_view_list" model="ir.ui.view">
+        <field name="name">prospecting.profile.view.list</field>
+        <field name="model">prospecting.profile</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="product_id" />
+            </list>
+        </field>
+    </record>
+
+    <record id="prospecting_profile_view_form" model="ir.ui.view">
+        <field name="name">prospecting.profile.view.form</field>
+        <field name="model">prospecting.profile</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-danger"
+                        invisible="active"
+                    />
+                    <group>
+                        <field name="active" invisible="1" />
+                        <field name="name" />
+                        <field name="product_id" />
+                    </group>
+                    <group>
+                        <field name="icp" placeholder="One item per line" />
+                        <field name="buying_signals" placeholder="One item per line" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="prospecting_profile_view_search" model="ir.ui.view">
+        <field name="name">prospecting.profile.view.search</field>
+        <field name="model">prospecting.profile</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="product_id" />
+                <filter
+                    string="Archived"
+                    name="inactive"
+                    domain="[('active', '=', False)]"
+                />
+            </search>
+        </field>
+    </record>
+
+    <record id="prospecting_profile_action" model="ir.actions.act_window">
+        <field name="name">Prospecting Profiles</field>
+        <field name="res_model">prospecting.profile</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a prospecting profile
+            </p>
+            <p>
+                A profile describes, for one product, the ideal customer and the
+                buying signals the prospecting agent looks for.
+            </p>
+        </field>
+    </record>
+</odoo>

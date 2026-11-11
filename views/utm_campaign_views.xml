@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 Seedian
+     License AGPL-3.0-or-later (https://www.gnu.org/licenses/agpl-3.0.html). -->
+<odoo>
+    <record id="utm_campaign_view_form" model="ir.ui.view">
+        <field name="name">utm.campaign.view.form.prospecting</field>
+        <field name="model">utm.campaign</field>
+        <field name="inherit_id" ref="utm.utm_campaign_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page
+                    string="Prospecting"
+                    name="prospecting"
+                    groups="sales_team.group_sale_salesman"
+                >
+                    <group>
+                        <group>
+                            <field name="prospecting_profile_id" string="Profile" />
+                            <field name="prospecting_industry" string="Industry" />
+                            <field
+                                name="prospecting_company_size"
+                                string="Company Size"
+                            />
+                            <field
+                                name="prospecting_target_count"
+                                string="Target Count"
+                            />
+                        </group>
+                        <group>
+                            <field
+                                name="prospecting_state_ids"
+                                string="States"
+                                widget="many2many_tags"
+                            />
+                            <field name="prospecting_city" string="City" />
+                        </group>
+                    </group>
+                    <label for="prospecting_instructions" string="Instructions" />
+                    <field
+                        name="prospecting_instructions"
+                        placeholder="Extra instructions and exclusions for the agent"
+                    />
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
