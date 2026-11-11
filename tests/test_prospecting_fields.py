@@ -112,7 +112,6 @@ class TestProspectingFields(TransactionCase):
                 "name": "Prospect",
                 "campaign_id": self.campaign.id,
                 "prospecting_fit_score": 80,
-                "prospecting_evidence": "Job posting for collections.",
                 "prospecting_cuit": "30-12345678-9",
                 "prospecting_run_ref": "thread-123",
             }
@@ -121,7 +120,6 @@ class TestProspectingFields(TransactionCase):
         lead = self.env["crm.lead"].browse(lead.id)
         self.assertEqual(lead.campaign_id, self.campaign)
         self.assertEqual(lead.prospecting_fit_score, 80)
-        self.assertEqual(lead.prospecting_evidence, "Job posting for collections.")
         self.assertEqual(lead.prospecting_cuit, "30-12345678-9")
         self.assertEqual(lead.prospecting_run_ref, "thread-123")
         self.assertEqual(

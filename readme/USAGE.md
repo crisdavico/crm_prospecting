@@ -8,5 +8,6 @@ To brief the agent, open _CRM > Prospecting > Campaigns_, open a campaign, go to
 _Prospecting_ tab, pick a profile, an industry (the same list contacts use) and a
 country, and fill in the target. With a country set, only that country's states can be
 chosen. Campaigns can be searched by country and industry, and grouped by country. Leads
-the agent creates are linked to the campaign and carry their fit score and evidence in
-the _Prospecting_ tab of the lead.
+the agent creates are linked to the campaign and carry their fit score in the
+_Prospecting_ tab of the lead; the agent's evidence goes in the lead's standard _Notes_
+tab (the `description` field).

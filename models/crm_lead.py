@@ -16,9 +16,6 @@ class CrmLead(models.Model):
     prospecting_fit_score = fields.Integer(
         help="How well the company fits the campaign profile, from 0 to 100.",
     )
-    prospecting_evidence = fields.Text(
-        help="Why the agent considers the company a fit.",
-    )
     prospecting_cuit = fields.Char(
         string="Prospecting CUIT",
         index=True,

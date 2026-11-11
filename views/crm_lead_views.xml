@@ -16,8 +16,6 @@
                             <field name="prospecting_run_ref" string="Run Reference" />
                         </group>
                     </group>
-                    <label for="prospecting_evidence" string="Evidence" />
-                    <field name="prospecting_evidence" />
                 </page>
             </xpath>
         </field>
