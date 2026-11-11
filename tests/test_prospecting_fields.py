@@ -63,11 +63,21 @@ class TestProspectingFields(TransactionCase):
         )
 
     def test_country_round_trip_and_search(self):
+        elsewhere = self.env["utm.campaign"].create(
+            {
+                "title": "Prospecting test elsewhere",
+                "prospecting_country_id": self.env.ref("base.us").id,
+            }
+        )
         self.campaign.prospecting_country_id = self.argentina
         self.env.invalidate_all()
+        # Limited to this test's campaigns: the database may hold others for the country.
         self.assertEqual(
             self.env["utm.campaign"].search(
-                [("prospecting_country_id", "=", self.argentina.id)]
+                [
+                    ("prospecting_country_id", "=", self.argentina.id),
+                    ("id", "in", (self.campaign | elsewhere).ids),
+                ]
             ),
             self.campaign,
         )
