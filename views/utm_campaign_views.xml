@@ -46,10 +46,10 @@
                             <field name="prospecting_city" string="City" />
                         </group>
                     </group>
-                    <label for="prospecting_instructions" string="Instructions" />
+                    <label for="prospecting_goal" string="Goal" />
                     <field
-                        name="prospecting_instructions"
-                        placeholder="Extra instructions and exclusions for the agent"
+                        name="prospecting_goal"
+                        placeholder="What this campaign aims to achieve, to focus the agent's lead search"
                     />
                 </page>
             </xpath>

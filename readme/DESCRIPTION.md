@@ -5,7 +5,7 @@ leads it finds.
   buying signals, as plain text with one item per line.
 - A **Prospecting** tab on the UTM campaign form with the brief the agent reads:
   profile, industry (the contacts' industry list), country, states, city, company size,
-  target count and extra instructions.
+  target count and the campaign goal, which focuses the agent's lead search.
 - An **Open for Prospecting** option on campaign stages: the agent only works on
   campaigns in stages where it is on.
 - A **Prospecting** tab on the lead form with what the agent produces: fit score (0 to
