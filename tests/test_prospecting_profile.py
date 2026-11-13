@@ -48,6 +48,23 @@ class TestProspectingProfile(TransactionCase):
         )
         self.assertTrue(profile.active, "A new profile is active by default")
 
+    def test_description(self):
+        self.assertFalse(
+            self.profile.description, "A profile has no description by default"
+        )
+        profile = self.Profile.create(
+            {
+                "name": "Described",
+                "product_id": self.product.id,
+                "description": "Small clinics that still book by phone.",
+            }
+        )
+        self.assertEqual(profile.description, "Small clinics that still book by phone.")
+        self.assertEqual(
+            profile.with_user(self.salesman).read(["description"])[0]["description"],
+            "Small clinics that still book by phone.",
+        )
+
     def test_archive_profile(self):
         self.profile.action_archive()
         self.assertFalse(self.profile.active)

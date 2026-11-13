@@ -39,8 +39,9 @@ class UtmCampaign(models.Model):
     prospecting_target_count = fields.Integer(
         help="How many leads the agent should find for this campaign.",
     )
-    prospecting_instructions = fields.Text(
-        help="Extra instructions and exclusions for the agent.",
+    prospecting_goal = fields.Text(
+        help="What this campaign aims to achieve. The agent reads it to focus its lead "
+        "search.",
     )
 
     @api.constrains("prospecting_country_id", "prospecting_state_ids")

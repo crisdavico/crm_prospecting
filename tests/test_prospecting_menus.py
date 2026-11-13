@@ -7,6 +7,7 @@ MENU_XMLIDS = (
     "crm_prospecting.prospecting_menu_root",
     "crm_prospecting.prospecting_campaign_menu",
     "crm_prospecting.prospecting_profile_menu",
+    "crm_prospecting.prospecting_stage_menu",
 )
 
 
@@ -33,6 +34,9 @@ class TestProspectingMenus(TransactionCase):
             self.env.ref("crm_prospecting.prospecting_campaign_menu").parent_id,
             self.root,
         )
+        stage_menu = self.env.ref("crm_prospecting.prospecting_stage_menu")
+        self.assertEqual(stage_menu.parent_id, self.root)
+        self.assertEqual(stage_menu.action, self.env.ref("utm.action_view_utm_stage"))
         self.assertEqual(self.root.child_id, self.menus - self.root)
 
     def test_salesman_sees_prospecting_menus(self):

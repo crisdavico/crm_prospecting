@@ -4,3 +4,4 @@
 from . import test_prospecting_profile
 from . import test_prospecting_fields
 from . import test_prospecting_menus
+from . import test_prospecting_stage

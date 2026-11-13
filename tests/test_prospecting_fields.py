@@ -32,7 +32,7 @@ class TestProspectingFields(TransactionCase):
                 "prospecting_city": "Rosario",
                 "prospecting_company_size": "10-50 employees",
                 "prospecting_target_count": 25,
-                "prospecting_instructions": "Skip current customers.",
+                "prospecting_goal": "Book demos with clinics that miss calls.",
             }
         )
         self.env.invalidate_all()
@@ -44,7 +44,7 @@ class TestProspectingFields(TransactionCase):
         self.assertEqual(campaign.prospecting_city, "Rosario")
         self.assertEqual(campaign.prospecting_company_size, "10-50 employees")
         self.assertEqual(campaign.prospecting_target_count, 25)
-        self.assertEqual(campaign.prospecting_instructions, "Skip current customers.")
+        self.assertEqual(campaign.prospecting_goal, "Book demos with clinics that miss calls.")
 
     def test_industry_is_the_partner_industry(self):
         field = self.env["utm.campaign"]._fields["prospecting_industry_id"]
@@ -156,3 +156,10 @@ class TestProspectingFields(TransactionCase):
                 {"name": "Too high", "prospecting_fit_score": 101}
             )
         self.assertFalse(self.env["crm.lead"].search([("name", "=", "Too high")]))
+
+    def test_the_goal_replaces_the_instructions(self):
+        Campaign = self.env["utm.campaign"]
+        self.assertIn("prospecting_goal", Campaign._fields)
+        self.assertNotIn("prospecting_instructions", Campaign._fields)
+        arch = Campaign.get_view(view_type="form")["arch"]
+        self.assertIn('name="prospecting_goal"', arch)

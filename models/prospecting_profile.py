@@ -7,8 +7,9 @@ from odoo import fields, models
 class ProspectingProfile(models.Model):
     """Who to look for when prospecting for one product.
 
-    The ideal customer profile and the buying signals are plain text with one
-    item per line, so the prospecting agent can split them into lists.
+    The description says in free text what the profile is. The ideal customer
+    profile and the buying signals are plain text with one item per line, so
+    the prospecting agent can split them into lists.
     """
 
     _name = "prospecting.profile"
@@ -21,6 +22,9 @@ class ProspectingProfile(models.Model):
         string="Product",
         required=True,
         index=True,
+    )
+    description = fields.Text(
+        help="What this profile is: the segment or angle it covers for the product.",
     )
     icp = fields.Text(
         string="Ideal Customer Profile",
