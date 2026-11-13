@@ -29,6 +29,10 @@
                         <field name="active" invisible="1" />
                         <field name="name" />
                         <field name="product_id" />
+                        <field
+                            name="description"
+                            placeholder="What this profile is, in a few lines"
+                        />
                     </group>
                     <group>
                         <field name="icp" placeholder="One item per line" />
