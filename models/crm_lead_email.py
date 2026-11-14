@@ -36,8 +36,8 @@ class CrmLead(models.Model):
         customer followers get nothing. Recipients and sending are set here, never
         taken from the caller's context.
 
-        The same subject and body sent to the lead in the last 24 hours is not sent
-        again, unless that email failed.
+        The same subject and body sent to the same address of the lead in the last
+        24 hours is not sent again, unless that email failed.
 
         Returns ``{"status": "queued" | "duplicate", "message_id": id, "email": str}``,
         where a duplicate answers the earlier message.
@@ -60,7 +60,7 @@ class CrmLead(models.Model):
         html = Markup("<br>").join((body or "").splitlines())
 
         lead._prospecting_email_lock()
-        duplicate = lead._prospecting_email_duplicate(subject, html)
+        duplicate = lead._prospecting_email_duplicate(email, subject, html)
         if duplicate:
             return {"status": "duplicate", "message_id": duplicate.id, "email": email}
 
@@ -97,6 +97,9 @@ class CrmLead(models.Model):
         SMTP server accepted the email.
         """
         message = self.env["mail.message"].sudo().browse(message_id).exists()
+        if message.model == self._name:
+            # Before telling anything about the message, even what kind it is.
+            self.browse(message.res_id).check_access("read")
         notification = (
             message._prospecting_customer_notifications()[:1]
             if message.model == self._name
@@ -109,11 +112,9 @@ class CrmLead(models.Model):
                     id=message_id,
                 )
             )
-        self.browse(message.res_id).check_access("read")
         result = {
             "message_id": message.id,
-            "email": notification.mail_email_address
-            or notification.res_partner_id.email_normalized,
+            "email": notification._prospecting_email(),
         }
         if notification.notification_status == "sent":
             return {**result, "status": "sent"}
@@ -155,8 +156,8 @@ class CrmLead(models.Model):
             )
         )
 
-    def _prospecting_email_duplicate(self, subject, html):
-        """The latest unfailed email to this lead's customer with the same content."""
+    def _prospecting_email_duplicate(self, email, subject, html):
+        """The latest unfailed email with the same content to `email` on this lead."""
         self.ensure_one()
         recent = (
             self.env["mail.message"]
@@ -182,7 +183,8 @@ class CrmLead(models.Model):
                 continue
             notifications = message._prospecting_customer_notifications()
             if any(
-                notification.notification_status not in FAILED_EMAIL_STATUSES
+                notification._prospecting_email() == email
+                and notification.notification_status not in FAILED_EMAIL_STATUSES
                 for notification in notifications
             ):
                 return message
@@ -218,12 +220,25 @@ class MailMessage(models.Model):
     _inherit = "mail.message"
 
     def _prospecting_customer_notifications(self):
-        """The email notifications of this message to customers, not internal users."""
+        """The email notifications of this message to its own recipients.
+
+        Those are the customer `prospecting_send_email` wrote to, never a follower.
+        """
         self.ensure_one()
-        return self.sudo().notification_ids.filtered(
+        message = self.sudo()
+        return message.notification_ids.filtered(
             lambda notification: notification.notification_type == "email"
             and (
                 notification.mail_email_address
-                or notification.res_partner_id.partner_share
+                or notification.res_partner_id in message.partner_ids
             )
         )
+
+
+class MailNotification(models.Model):
+    _inherit = "mail.notification"
+
+    def _prospecting_email(self):
+        """The address this email notification went to."""
+        self.ensure_one()
+        return self.mail_email_address or self.res_partner_id.email_normalized

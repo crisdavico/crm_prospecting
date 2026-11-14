@@ -30,8 +30,8 @@ leads it finds.
   body is plain text: it is escaped and its line breaks kept. The email is authored by
   the caller, with their signature, and sent right after the request commits; internal
   followers get their usual notification, customer followers nothing. Lost, archived and
-  email-less leads are refused. The same subject and body sent to the lead in the last
-  24 hours is not sent again unless it failed. It answers
+  email-less leads are refused. The same subject and body sent to the same address of
+  the lead in the last 24 hours is not sent again unless it failed. It answers
   `{"status": "queued" | "duplicate", "message_id": id, "email": address}`;
   `crm.lead.prospecting_email_status(message_id)` then answers `"sent"` once the SMTP
   server accepted it, `"failed"` with a `failure_reason`, or `"pending"`.

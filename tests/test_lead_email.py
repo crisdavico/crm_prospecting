@@ -270,6 +270,14 @@ class TestLeadEmail(MailCase):
         self.env.invalidate_all()
         self.assertEqual(self._send(subject="Hello", body="Hi")["status"], "queued")
 
+    def test_same_content_to_a_new_address_goes_through(self):
+        first = self._send(subject="Hello", body="Hi")
+        self.lead.email_from = "new.contact@acme.example"
+        second = self._send(subject="Hello", body="Hi")
+        self.assertEqual(second["status"], "queued")
+        self.assertNotEqual(second["message_id"], first["message_id"])
+        self.assertEqual(len(self._sent_to("new.contact@acme.example")), 1)
+
     def test_a_failed_email_can_be_sent_again(self):
         with self.mock_mail_gateway(), self._smtp_refuses("agustin.perez@acme.example"):
             self.Lead.prospecting_send_email(self.lead.id, "Hello", "Hi")
@@ -286,6 +294,28 @@ class TestLeadEmail(MailCase):
             self.env["crm.lead"].with_user(other).prospecting_email_status(
                 result["message_id"]
             )
+
+    def test_status_reveals_nothing_about_messages_of_unreadable_leads(self):
+        note = self.lead.message_post(body="Internal note")
+        other = new_test_user(
+            self.env, "probing_seller", groups="sales_team.group_sale_salesman"
+        )
+        with self.assertRaises(AccessError):
+            self.env["crm.lead"].with_user(other).prospecting_email_status(note.id)
+
+    def test_customer_who_is_an_internal_user_still_gets_a_status(self):
+        colleague = new_test_user(
+            self.env,
+            "colleague_customer",
+            email="colleague@seedian.example",
+            groups="base.group_user",
+        )
+        self.lead.partner_id = colleague.partner_id
+        result = self._send()
+        self.assertEqual(result["email"], "colleague@seedian.example")
+        status = self.Lead.prospecting_email_status(result["message_id"])
+        self.assertEqual(status["status"], "sent")
+        self.assertEqual(self._send()["status"], "duplicate")
 
     def test_status_of_a_message_that_is_not_a_lead_email_is_refused(self):
         note = self.lead.message_post(body="Internal note")
