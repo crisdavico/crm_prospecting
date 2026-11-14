@@ -1,0 +1,441 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* crm_prospecting
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_AR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#. module: crm_prospecting
+#: model_terms:ir.actions.act_window,help:crm_prospecting.prospecting_profile_action
+msgid ""
+"A profile describes, for one product, the ideal customer and the\n"
+"                buying signals the prospecting agent looks for."
+msgstr ""
+"Un perfil describe, para un producto, el cliente ideal y las\n"
+"                señales de compra que busca el agente de prospección."
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__active
+msgid "Active"
+msgstr "Activo"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_crm_lead__prospecting_run_ref
+msgid "Agent thread or run that produced the lead."
+msgstr "Hilo o ejecución del agente que generó la iniciativa."
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.prospecting_profile_view_form
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.prospecting_profile_view_search
+msgid "Archived"
+msgstr "Archivado"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__buying_signals
+msgid "Buying Signals"
+msgstr "Señales de compra"
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.crm_lead_view_form
+msgid "CUIT"
+msgstr "CUIT"
+
+#. module: crm_prospecting
+#: model:ir.model,name:crm_prospecting.model_utm_stage
+msgid "Campaign Stage"
+msgstr "Etapa de campaña"
+
+#. module: crm_prospecting
+#: model:ir.ui.menu,name:crm_prospecting.prospecting_campaign_menu
+msgid "Campaigns"
+msgstr "Campañas"
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+msgid "City"
+msgstr "Ciudad"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_city
+msgid "City where the companies should be."
+msgstr "Ciudad donde deben estar las empresas."
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+msgid "Company Size"
+msgstr "Tamaño de empresa"
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_search
+msgid "Country"
+msgstr "País"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_country_id
+msgid "Country where the companies should be."
+msgstr "País donde deben estar las empresas."
+
+#. module: crm_prospecting
+#: model_terms:ir.actions.act_window,help:crm_prospecting.prospecting_profile_action
+msgid "Create a prospecting profile"
+msgstr "Crear un perfil de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model,website_form_label:crm_prospecting.model_crm_lead
+msgid "Create an Opportunity"
+msgstr "Crear una oportunidad"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__description
+msgid "Description"
+msgstr "Descripción"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__display_name
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__display_name
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__display_name
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_stage__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.crm_lead_view_form
+msgid "Fit Score"
+msgstr "Puntaje de ajuste"
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+msgid "Goal"
+msgstr "Objetivo"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_target_count
+msgid "How many leads the agent should find for this campaign."
+msgstr "Cuántas iniciativas debe encontrar el agente para esta campaña."
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_crm_lead__prospecting_fit_score
+msgid "How well the company fits the campaign profile, from 0 to 100."
+msgstr ""
+"Qué tan bien se ajusta la empresa al perfil de la campaña, de 0 a 100."
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__id
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__id
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__id
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_stage__id
+msgid "ID"
+msgstr "ID"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__icp
+msgid "Ideal Customer Profile"
+msgstr "Perfil de cliente ideal"
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+msgid "Industry"
+msgstr "Industria"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_industry_id
+msgid "Industry of the companies to look for, as set on contacts."
+msgstr ""
+"Industria de las empresas a buscar, tal como se define en los contactos."
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: crm_prospecting
+#: model:ir.model,name:crm_prospecting.model_crm_lead
+msgid "Lead"
+msgstr "Iniciativa"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_linkedin
+msgid "LinkedIn Profile"
+msgstr "Perfil de LinkedIn"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_crm_lead__prospecting_linkedin
+msgid ""
+"LinkedIn profile of the lead's contact, used to detect duplicate leads."
+msgstr ""
+"Perfil de LinkedIn del contacto de la iniciativa, usado para detectar "
+"iniciativas duplicadas."
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__email_normalized
+msgid "Normalized Email"
+msgstr "Correo electrónico normalizado"
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.prospecting_profile_view_form
+msgid "One item per line"
+msgstr "Un elemento por línea"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_stage__prospecting_enabled
+msgid "Open for Prospecting"
+msgstr "Abierta a prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_profile_id
+msgid "Product and ideal customer profile this campaign prospects for."
+msgstr ""
+"Producto y perfil de cliente ideal para los que prospecta esta campaña."
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+msgid "Profile"
+msgstr "Perfil"
+
+#. module: crm_prospecting
+#: model:ir.ui.menu,name:crm_prospecting.prospecting_profile_menu
+msgid "Profiles"
+msgstr "Perfiles"
+
+#. module: crm_prospecting
+#: model:ir.ui.menu,name:crm_prospecting.prospecting_menu_root
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.crm_lead_view_form
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+msgid "Prospecting"
+msgstr "Prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_cuit
+msgid "Prospecting CUIT"
+msgstr "CUIT de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_city
+msgid "Prospecting City"
+msgstr "Ciudad de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_company_key
+msgid "Prospecting Company Key"
+msgstr "Clave de empresa de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_company_size
+msgid "Prospecting Company Size"
+msgstr "Tamaño de empresa de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_contact_key
+msgid "Prospecting Contact Key"
+msgstr "Clave de contacto de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_country_id
+msgid "Prospecting Country"
+msgstr "País de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_cuit_key
+msgid "Prospecting Cuit Key"
+msgstr "Clave de CUIT de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_fit_score
+msgid "Prospecting Fit Score"
+msgstr "Puntaje de ajuste de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_goal
+msgid "Prospecting Goal"
+msgstr "Objetivo de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_industry_id
+msgid "Prospecting Industry"
+msgstr "Industria de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_linkedin_key
+msgid "Prospecting Linkedin Key"
+msgstr "Clave de LinkedIn de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model,name:crm_prospecting.model_prospecting_profile
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_profile_id
+msgid "Prospecting Profile"
+msgstr "Perfil de prospección"
+
+#. module: crm_prospecting
+#: model:ir.actions.act_window,name:crm_prospecting.prospecting_profile_action
+msgid "Prospecting Profiles"
+msgstr "Perfiles de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_run_ref
+msgid "Prospecting Run Reference"
+msgstr "Referencia de ejecución de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_state_ids
+msgid "Prospecting States"
+msgstr "Provincias de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_target_count
+msgid "Prospecting Target Count"
+msgstr "Cantidad objetivo de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_website_key
+msgid "Prospecting Website Key"
+msgstr "Clave de sitio web de prospección"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_prospecting_profile__buying_signals
+msgid "Public signs that a company may need the product. One item per line."
+msgstr ""
+"Señales públicas de que una empresa puede necesitar el producto. Un elemento"
+" por línea."
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.crm_lead_view_form
+msgid "Run Reference"
+msgstr "Referencia de ejecución"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_company_size
+msgid "Size of the companies to look for, for example by employee count."
+msgstr ""
+"Tamaño de las empresas a buscar, por ejemplo por cantidad de empleados."
+
+#. module: crm_prospecting
+#: model:ir.ui.menu,name:crm_prospecting.prospecting_stage_menu
+msgid "Stages"
+msgstr "Etapas"
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+msgid "States"
+msgstr "Provincias"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_state_ids
+msgid "States or provinces where the companies should be."
+msgstr "Provincias o estados donde deben estar las empresas."
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+msgid "Target Count"
+msgstr "Cantidad objetivo"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_crm_lead__prospecting_cuit
+msgid "Tax ID of the company, used to detect duplicate leads."
+msgstr ""
+"Identificación fiscal de la empresa, usada para detectar iniciativas "
+"duplicadas."
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_stage__prospecting_enabled
+msgid ""
+"The prospecting agent only finds campaigns in stages with this option on."
+msgstr ""
+"El agente de prospección solo encuentra campañas en etapas con esta opción "
+"activada."
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead.py:0
+msgid "The prospecting fit score must be between %(min)s and %(max)s."
+msgstr ""
+"El puntaje de ajuste de prospección debe estar entre %(min)s y %(max)s."
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/utm_campaign.py:0
+msgid ""
+"The prospecting states of campaign %(campaign)s must belong to %(country)s. "
+"These do not: %(states)s."
+msgstr ""
+"Las provincias de prospección de la campaña %(campaign)s deben pertenecer a "
+"%(country)s. Estas no: %(states)s."
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_crm_lead__email_normalized
+msgid ""
+"This field is used to search on email address as the primary email field can"
+" contain more than strictly an email address."
+msgstr ""
+"Este campo se usa para buscar por dirección de correo electrónico, ya que el"
+" campo de correo principal puede contener más que una dirección de correo."
+
+#. module: crm_prospecting
+#: model:ir.model,name:crm_prospecting.model_utm_campaign
+msgid "UTM Campaign"
+msgstr "Campaña UTM"
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+msgid "What this campaign aims to achieve, to focus the agent's lead search"
+msgstr ""
+"Qué busca lograr esta campaña, para enfocar la búsqueda de iniciativas del "
+"agente"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_goal
+msgid ""
+"What this campaign aims to achieve. The agent reads it to focus its lead "
+"search."
+msgstr ""
+"Qué busca lograr esta campaña. El agente lo lee para enfocar su búsqueda de "
+"iniciativas."
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.prospecting_profile_view_form
+msgid "What this profile is, in a few lines"
+msgstr "Qué es este perfil, en pocas líneas"
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_prospecting_profile__description
+msgid "What this profile is: the segment or angle it covers for the product."
+msgstr "Qué es este perfil: el segmento o enfoque que cubre para el producto."
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_prospecting_profile__icp
+msgid "Who the product is for. One item per line."
+msgstr "Para quién es el producto. Un elemento por línea."
