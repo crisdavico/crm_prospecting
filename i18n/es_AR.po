@@ -47,7 +47,7 @@ msgstr "Señales de compra"
 #. module: crm_prospecting
 #: model_terms:ir.ui.view,arch_db:crm_prospecting.crm_lead_view_form
 msgid "CUIT"
-msgstr "CUIT"
+msgstr ""
 
 #. module: crm_prospecting
 #: model:ir.model,name:crm_prospecting.model_utm_stage
@@ -145,7 +145,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__id
 #: model:ir.model.fields,field_description:crm_prospecting.field_utm_stage__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: crm_prospecting
 #: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__icp
@@ -179,6 +179,26 @@ msgid "Lead"
 msgstr "Iniciativa"
 
 #. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_email.py:0
+msgid "Lead %(id)s does not exist."
+msgstr "La iniciativa %(id)s no existe."
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_email.py:0
+msgid "Lead %(id)s has no customer email: no email is sent."
+msgstr ""
+"La iniciativa %(id)s no tiene correo del cliente: no se envía ningún correo."
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_email.py:0
+msgid "Lead %(id)s is lost or archived: no email is sent to it."
+msgstr ""
+"La iniciativa %(id)s está perdida o archivada: no se le envía ningún correo."
+
+#. module: crm_prospecting
 #: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_linkedin
 msgid "LinkedIn Profile"
 msgstr "Perfil de LinkedIn"
@@ -190,6 +210,12 @@ msgid ""
 msgstr ""
 "Perfil de LinkedIn del contacto de la iniciativa, usado para detectar "
 "iniciativas duplicadas."
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_email.py:0
+msgid "Message %(id)s is not an email to a lead's customer."
+msgstr "El mensaje %(id)s no es un correo al cliente de una iniciativa."
 
 #. module: crm_prospecting
 #: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__name
@@ -369,6 +395,12 @@ msgid "Tax ID of the company, used to detect duplicate leads."
 msgstr ""
 "Identificación fiscal de la empresa, usada para detectar iniciativas "
 "duplicadas."
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_email.py:0
+msgid "The email subject is required."
+msgstr "El asunto del correo es obligatorio."
 
 #. module: crm_prospecting
 #: model:ir.model.fields,help:crm_prospecting.field_utm_stage__prospecting_enabled

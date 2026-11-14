@@ -6,3 +6,4 @@ from . import test_prospecting_fields
 from . import test_prospecting_menus
 from . import test_prospecting_stage
 from . import test_lead_dedup
+from . import test_lead_email
