@@ -13,6 +13,7 @@
                         <group>
                             <field name="prospecting_fit_score" string="Fit Score" />
                             <field name="prospecting_cuit" string="CUIT" />
+                            <field name="prospecting_linkedin" widget="url" />
                             <field name="prospecting_run_ref" string="Run Reference" />
                         </group>
                     </group>

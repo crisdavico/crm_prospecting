@@ -3,7 +3,7 @@
 
 {
     "name": "CRM Prospecting",
-    "version": "19.0.1.1.0",
+    "version": "19.0.1.2.0",
     "category": "Sales/CRM",
     "summary": "Product profiles, campaign briefs and lead fields for an AI "
     "prospecting agent",
