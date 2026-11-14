@@ -66,21 +66,50 @@ def cuit_key(value):
     return digits or False
 
 
+SHARED_HOSTS = frozenset(
+    {
+        "facebook.com",
+        "instagram.com",
+        "linkedin.com",
+        "twitter.com",
+        "x.com",
+        "youtube.com",
+        "tiktok.com",
+        "linktr.ee",
+        "wa.me",
+        "whatsapp.com",
+        "google.com",
+        "goo.gl",
+        "mercadolibre.com.ar",
+    }
+)
+"""Platforms that host pages of many companies: their host identifies no company."""
+
+
 def _host_and_path(value):
+    """The lowercase host without `www.` and the path; empty for unparsable text."""
     text = (value or "").strip()
     if not text:
         return "", ""
     if "://" not in text:
         text = f"//{text}"
-    parts = urlsplit(text)
-    host = (parts.hostname or "").lower()
+    try:
+        parts = urlsplit(text)
+        host = (parts.hostname or "").lower()
+    except ValueError:
+        return "", ""
     host = host.removeprefix("www.")
     return host, parts.path
 
 
 def website_key(value):
-    """The host of a website without `www.`: `https://www.acme.com/x` is `acme.com`."""
+    """The host of a website without `www.`: `https://www.acme.com/x` is `acme.com`.
+
+    False for a page on a platform shared by many companies (`SHARED_HOSTS`).
+    """
     host, _path = _host_and_path(value)
+    if any(host == shared or host.endswith(f".{shared}") for shared in SHARED_HOSTS):
+        return False
     return host or False
 
 

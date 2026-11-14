@@ -191,6 +191,45 @@ class TestLeadDedup(TransactionCase):
         lead = self.Lead.browse(result["lead_id"])
         self.assertEqual(lead.create_uid, agent)
 
+    # Keys that do not identify a company
+
+    def test_a_malformed_stored_website_has_no_key(self):
+        # Odoo refuses such a website on create; one already stored, as the upgrade
+        # finds it, must not stop the keys from being computed.
+        lead = self.Lead.create({"name": "Odd", "website": "https://odd.example"})
+        self.env.cr.execute(
+            "UPDATE crm_lead SET website = 'http://[bad' WHERE id = %s", [lead.id]
+        )
+        self.env.invalidate_all()
+        lead._compute_prospecting_keys()
+        self.assertFalse(lead.prospecting_website_key)
+
+    def test_a_shared_platform_page_is_not_a_company(self):
+        self.Lead.create(
+            {
+                "name": "Page",
+                "partner_name": "Pagina",
+                "website": "https://facebook.com/x",
+            }
+        )
+        self.assertCreated(
+            self._lead(partner_name="Otra", website="https://www.facebook.com/otra")
+        )
+
+    def test_a_company_without_contact_matches_by_cuit_alone(self):
+        self.assertDuplicate(
+            self._lead(partner_name="Renamed", prospecting_cuit="30712345678")
+        )
+
+    def test_leads_of_other_companies_are_not_searched(self):
+        other = self.env["res.company"].create({"name": "Other company"})
+        self.existing.company_id = other
+        main_only = self.Lead.with_context(allowed_company_ids=[self.env.company.id])
+        result = main_only.prospecting_create_lead(
+            self._lead(contact_name="Z", email_from="agustin.perez@acme.com.ar")
+        )
+        self.assertEqual(result["status"], "created")
+
     # Normalized keys are stored for every lead
 
     def test_keys_follow_the_lead(self):
