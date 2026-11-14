@@ -6,7 +6,7 @@ from datetime import timedelta
 from markupsafe import Markup
 
 from odoo import api, fields, models
-from odoo.exceptions import MissingError, UserError
+from odoo.exceptions import UserError
 from odoo.tools import SQL, formataddr, html2plaintext
 from odoo.tools.misc import clean_context
 
@@ -47,7 +47,7 @@ class CrmLead(models.Model):
             raise UserError(self.env._("The email subject is required."))
         lead = self.browse(lead_id)
         if not lead.exists():
-            raise MissingError(self.env._("Lead %(id)s does not exist.", id=lead_id))
+            raise UserError(self.env._("Lead %(id)s does not exist.", id=lead_id))
         lead.check_access("read")
         if not lead.active:
             raise UserError(
@@ -106,7 +106,7 @@ class CrmLead(models.Model):
             else self.env["mail.notification"]
         )
         if not notification:
-            raise MissingError(
+            raise UserError(
                 self.env._(
                     "Message %(id)s is not an email to a lead's customer.",
                     id=message_id,

@@ -7,7 +7,7 @@ from datetime import timedelta
 from psycopg2.errors import SerializationFailure
 
 from odoo import SUPERUSER_ID, api, fields, sql_db
-from odoo.exceptions import AccessError, MissingError, UserError
+from odoo.exceptions import AccessError, UserError
 from odoo.tests import BaseCase, new_test_user, tagged
 from odoo.tests.common import get_db_name
 from odoo.tools import mute_logger
@@ -237,9 +237,12 @@ class TestLeadEmail(MailCase):
             )
         self.assertFalse(self._mails)
 
-    def test_missing_lead_is_refused(self):
-        with self.assertRaises(MissingError):
+    def test_missing_lead_is_refused_as_a_plain_user_error(self):
+        # RPC clients map Odoo errors by exact class: a MissingError subclass would
+        # not read as a refusal on every connector.
+        with self.assertRaises(UserError) as caught:
             self._send(lead=self.env["crm.lead"].browse(999999999))
+        self.assertIs(type(caught.exception), UserError)
 
     # Repeat guard (S13)
 
@@ -320,8 +323,12 @@ class TestLeadEmail(MailCase):
     def test_status_of_a_message_that_is_not_a_lead_email_is_refused(self):
         note = self.lead.message_post(body="Internal note")
         for message_id in (note.id, 999999999):
-            with self.subTest(message_id=message_id), self.assertRaises(MissingError):
+            with (
+                self.subTest(message_id=message_id),
+                self.assertRaises(UserError) as caught,
+            ):
                 self.Lead.prospecting_email_status(message_id)
+            self.assertIs(type(caught.exception), UserError)
 
 
 @tagged("post_install", "-at_install")
