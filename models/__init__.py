@@ -5,3 +5,4 @@ from . import prospecting_profile
 from . import utm_campaign
 from . import utm_stage
 from . import crm_lead
+from . import crm_lead_email

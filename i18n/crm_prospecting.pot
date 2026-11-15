@@ -174,6 +174,24 @@ msgid "Lead"
 msgstr ""
 
 #. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_email.py:0
+msgid "Lead %(id)s does not exist."
+msgstr ""
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_email.py:0
+msgid "Lead %(id)s has no customer email: no email is sent."
+msgstr ""
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_email.py:0
+msgid "Lead %(id)s is lost or archived: no email is sent to it."
+msgstr ""
+
+#. module: crm_prospecting
 #: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_linkedin
 msgid "LinkedIn Profile"
 msgstr ""
@@ -182,6 +200,12 @@ msgstr ""
 #: model:ir.model.fields,help:crm_prospecting.field_crm_lead__prospecting_linkedin
 msgid ""
 "LinkedIn profile of the lead's contact, used to detect duplicate leads."
+msgstr ""
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_email.py:0
+msgid "Message %(id)s is not an email to a lead's customer."
 msgstr ""
 
 #. module: crm_prospecting
@@ -355,6 +379,12 @@ msgstr ""
 #. module: crm_prospecting
 #: model:ir.model.fields,help:crm_prospecting.field_crm_lead__prospecting_cuit
 msgid "Tax ID of the company, used to detect duplicate leads."
+msgstr ""
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_email.py:0
+msgid "The email subject is required."
 msgstr ""
 
 #. module: crm_prospecting
