@@ -65,6 +65,14 @@ class TestLeadOutreach(MailCase):
         self.assertEqual(result["status"], "duplicate")
         self.assertEqual(str(lead.prospecting_outreach_date), "2026-01-02 03:04:05")
 
+    def test_duplicate_is_answered_after_the_contacted_flag_is_removed(self):
+        lead = self._lead()
+        first = self._send(lead)
+        self.contacted.prospecting_contacted = False
+        again = self._send(lead)
+        self.assertEqual(again["status"], "duplicate")
+        self.assertEqual(again["message_id"], first["message_id"])
+
     # Convert and move (S2)
 
     def test_lead_becomes_an_opportunity_in_contacted_without_a_partner(self):

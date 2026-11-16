@@ -64,13 +64,13 @@ class CrmLead(models.Model):
                 )
             )
         recipient, email = lead._prospecting_email_recipient()
-        contacted = lead._prospecting_contacted_stage()
         html = Markup("<br>").join((body or "").splitlines())
 
         lead._prospecting_email_lock()
         duplicate = lead._prospecting_email_duplicate(email, subject, html)
         if duplicate:
             return {"status": "duplicate", "message_id": duplicate.id, "email": email}
+        contacted = lead._prospecting_contacted_stage()
 
         context = {
             **clean_context(self.env.context),
