@@ -9,3 +9,4 @@ from . import test_lead_dedup
 from . import test_lead_email
 from . import test_lead_outreach
 from . import test_outreach_candidates
+from . import test_outreach_brief

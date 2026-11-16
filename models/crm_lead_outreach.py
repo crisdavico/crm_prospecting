@@ -6,6 +6,7 @@ from collections import Counter
 from odoo import api, models
 from odoo.exceptions import UserError
 from odoo.fields import Domain
+from odoo.tools import html2plaintext
 
 from .crm_lead import personal_email_key
 
@@ -112,6 +113,34 @@ class CrmLead(models.Model):
         result["skipped_leads"] = dict(skipped_leads)
         result["skipped_companies"] = dict(skipped_companies)
         return result
+
+    @api.model
+    def prospecting_outreach_detail(self, lead_id):
+        """What the email agent needs to write to the person of lead `lead_id`.
+
+        Refuses a lead the caller cannot read. The evidence is the lead's notes as
+        plain text.
+
+        Returns ``{"lead_id": id, "contact_name", "company_name", "job_title",
+        "evidence", "website", "linkedin", "country"}``, each a string or False.
+        """
+        lead = self.browse(lead_id).exists()
+        if not lead:
+            raise UserError(self.env._("Lead %(id)s does not exist.", id=lead_id))
+        lead.check_access("read")
+        evidence = html2plaintext(lead.description or "").strip()
+        return {
+            "lead_id": lead.id,
+            "contact_name": lead.contact_name or lead.partner_id.name or False,
+            "company_name": lead.partner_name
+            or lead.partner_id.commercial_company_name
+            or False,
+            "job_title": lead.function or False,
+            "evidence": evidence or False,
+            "website": lead.website or False,
+            "linkedin": lead.prospecting_linkedin or False,
+            "country": lead.country_id.name or False,
+        }
 
     def _prospecting_eligible_leads(self, skipped):
         """These leads that qualify on their own, counting the others in `skipped`."""
