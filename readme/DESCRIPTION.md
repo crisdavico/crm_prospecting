@@ -6,7 +6,10 @@ leads it finds.
   one item per line.
 - A **Prospecting** tab on the UTM campaign form with the brief the agent reads:
   profile, industry (the contacts' industry list), country, states, city, company size,
-  target count and the campaign goal, which focuses the agent's lead search.
+  target count and the campaign goal, which focuses the agent's lead search. The tab
+  also holds the campaign's **Email Guidelines**, which tell the email agent how to
+  write to the campaign's leads: language, tone, structure, call to action, things to
+  avoid, example emails and blocks to use word for word.
 - An **Open for Prospecting** option on campaign stages: the agent only works on
   campaigns in stages where it is on.
 - A **Prospecting** tab on the lead form with what the agent produces: fit score (0 to
@@ -35,3 +38,10 @@ leads it finds.
   `{"status": "queued" | "duplicate", "message_id": id, "email": address}`;
   `crm.lead.prospecting_email_status(message_id)` then answers `"sent"` once the SMTP
   server accepted it, `"failed"` with a `failure_reason`, or `"pending"`.
+  The caller needs write access to the lead, because in the same transaction, before
+  the email is known to be sent, the lead gets its **Outreach Date**, a lead becomes an
+  opportunity without creating a contact, and a lead without a stage or in the first
+  stage of its sales team moves to the pipeline stage marked **Contacted
+  (Prospecting)**. Later stages are left alone. Without a stage marked Contacted the
+  email is refused. A duplicate changes nothing. A failed email leaves these changes in
+  place.
