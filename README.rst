@@ -75,13 +75,13 @@ leads it finds.
   it, in a campaign with email guidelines. Leads are grouped into companies by CUIT,
   website or company name, also through other leads, across every lead in any campaign,
   lost and archived ones included. A company is skipped when any of its leads was
-  emailed by the agent, is won, or is an opportunity past the first stage of its team. A
-  shared inbox is offered only when the company has no one else. The grouping reads
-  past the caller's record rules: only leads the caller can read are offered, but the
-  skip counts can reflect leads the caller cannot read.
-  ``utm.campaign.prospecting_outreach_brief(campaign_id)`` answers the campaign's profile
-  (product, description, and the ideal customer profile and buying signals as lists),
-  goal and email guidelines, and refuses a campaign without guidelines.
+  emailed by the agent, is won, or is an open opportunity past the first stage of its
+  team (a lost deal does not block). A shared inbox is offered only when the company has
+  no one else. The grouping reads past the caller's record rules: only leads the caller
+  can read are offered, but the skip counts can reflect leads the caller cannot read.
+  ``utm.campaign.prospecting_outreach_brief(campaign_id)`` answers the campaign's
+  profile (product, description, and the ideal customer profile and buying signals as
+  lists), goal and email guidelines, and refuses a campaign without guidelines.
   ``crm.lead.prospecting_outreach_detail(lead_id)`` answers what a draft to one lead
   needs: contact and company names, job title, evidence (the lead's notes as plain
   text), website, LinkedIn and country, for a lead the caller can read.

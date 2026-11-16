@@ -32,14 +32,15 @@ class CrmLead(models.Model):
     ):
         """The companies of campaign `campaign_id` the email agent may write to.
 
-        A lead qualifies when it is active, has an email, its address is not
-        blacklisted and the agent never emailed it. A campaign without email
-        guidelines offers nobody. Leads are grouped into companies by CUIT, website
-        or company name, transitively, across every lead of the caller's companies in
-        any campaign, archived ones included. A company is skipped when any of its
-        leads was emailed by the agent, is won, or is an opportunity past the first
-        stage of its team. Within a company, a person with their own email beats a
-        shared inbox, which is offered only when the company has no one else.
+        A lead qualifies when it is active, has an email, its address is not blacklisted
+        and the agent never emailed it. A campaign without email guidelines offers
+        nobody. Leads are grouped into companies by CUIT, website or company name,
+        transitively, across every lead of the caller's companies in any campaign,
+        archived ones included. A company is skipped when any of its leads was emailed
+        by the agent, is won, or is an active opportunity past the first stage of its
+        team: a lost deal does not block. Within a company, a person with their own
+        email beats a shared inbox, which is offered only when the company has no one
+        else.
 
         The grouping reads past the caller's record rules, but only leads the caller
         can read are offered. At most `limit` companies (1 to 10) are returned, best
@@ -230,7 +231,9 @@ class CrmLead(models.Model):
         if "won" in leads.mapped("won_status"):
             return "won"
         first_stages = {}
-        for lead in leads.filtered(lambda lead: lead.type == "opportunity"):
+        for lead in leads.filtered(
+            lambda lead: lead.active and lead.type == "opportunity"
+        ):
             team = lead.team_id.id
             if team not in first_stages:
                 first_stages[team] = lead._prospecting_first_stage()
