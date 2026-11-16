@@ -153,6 +153,12 @@ class CrmLead(models.Model):
         string="LinkedIn Profile",
         help="LinkedIn profile of the lead's contact, used to detect duplicate leads.",
     )
+    prospecting_outreach_date = fields.Datetime(
+        readonly=True,
+        copy=False,
+        index=True,
+        help="When the email agent last emailed this lead.",
+    )
 
     # Normalized keys `prospecting_create_lead` searches on.
     prospecting_cuit_key = fields.Char(
