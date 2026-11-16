@@ -171,6 +171,21 @@ class TestOutreachCandidates(TransactionCase):
         self.assertNotIn(lead.id, self._lead_ids(result))
         self.assertEqual(result["skipped_companies"]["opportunity_in_progress"], 1)
 
+    def test_company_with_a_lost_opportunity_past_the_first_stage_is_offered(self):
+        lead = self._lead("Acme", "Ana", "ana@acme.example")
+        self._lead(
+            "Acme",
+            "Beto",
+            "beto@acme.example",
+            campaign=self.other_campaign,
+            type="opportunity",
+            stage_id=self.later_stage.id,
+            active=False,
+        )
+        result = self._candidates()
+        self.assertIn(lead.id, self._lead_ids(result))
+        self.assertEqual(result["skipped_companies"], {})
+
     def test_company_with_a_first_stage_opportunity_is_offered(self):
         lead = self._lead(
             "Acme",

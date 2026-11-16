@@ -45,3 +45,22 @@ leads it finds.
   (Prospecting)**. Later stages are left alone. Without a stage marked Contacted the
   email is refused. A duplicate changes nothing. A failed email leaves these changes in
   place.
+- **Outreach** for the email agent, which holds every rule of who may be emailed:
+  `crm.lead.prospecting_outreach_candidates(campaign_id, limit)` lists up to `limit` (1
+  to 10) companies of the campaign, best fit first, each with the people the agent may
+  write to (lead id, name, job title, fit score and whether the address is a shared
+  inbox), plus counts of skipped leads and companies by reason. A lead qualifies when it
+  is active, has an email, its address is not blacklisted and the agent never emailed
+  it, in a campaign with email guidelines. Leads are grouped into companies by CUIT,
+  website or company name, also through other leads, across every lead in any campaign,
+  lost and archived ones included. A company is skipped when any of its leads was
+  emailed by the agent, is won, or is an open opportunity past the first stage of its
+  team (a lost deal does not block). A shared inbox is offered only when the company has
+  no one else. The grouping reads past the caller's record rules: only leads the caller
+  can read are offered, but the skip counts can reflect leads the caller cannot read.
+  `utm.campaign.prospecting_outreach_brief(campaign_id)` answers the campaign's profile
+  (product, description, and the ideal customer profile and buying signals as lists),
+  goal and email guidelines, and refuses a campaign without guidelines.
+  `crm.lead.prospecting_outreach_detail(lead_id)` answers what a draft to one lead
+  needs: contact and company names, job title, evidence (the lead's notes as plain
+  text), website, LinkedIn and country, for a lead the caller can read.

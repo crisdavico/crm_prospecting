@@ -6,6 +6,7 @@ from collections import Counter
 from odoo import api, models
 from odoo.exceptions import UserError
 from odoo.fields import Domain
+from odoo.tools import html2plaintext
 
 from .crm_lead import personal_email_key
 
@@ -31,14 +32,15 @@ class CrmLead(models.Model):
     ):
         """The companies of campaign `campaign_id` the email agent may write to.
 
-        A lead qualifies when it is active, has an email, its address is not
-        blacklisted and the agent never emailed it. A campaign without email
-        guidelines offers nobody. Leads are grouped into companies by CUIT, website
-        or company name, transitively, across every lead of the caller's companies in
-        any campaign, archived ones included. A company is skipped when any of its
-        leads was emailed by the agent, is won, or is an opportunity past the first
-        stage of its team. Within a company, a person with their own email beats a
-        shared inbox, which is offered only when the company has no one else.
+        A lead qualifies when it is active, has an email, its address is not blacklisted
+        and the agent never emailed it. A campaign without email guidelines offers
+        nobody. Leads are grouped into companies by CUIT, website or company name,
+        transitively, across every lead of the caller's companies in any campaign,
+        archived ones included. A company is skipped when any of its leads was emailed
+        by the agent, is won, or is an active opportunity past the first stage of its
+        team: a lost deal does not block. Within a company, a person with their own
+        email beats a shared inbox, which is offered only when the company has no one
+        else.
 
         The grouping reads past the caller's record rules, but only leads the caller
         can read are offered. At most `limit` companies (1 to 10) are returned, best
@@ -112,6 +114,34 @@ class CrmLead(models.Model):
         result["skipped_leads"] = dict(skipped_leads)
         result["skipped_companies"] = dict(skipped_companies)
         return result
+
+    @api.model
+    def prospecting_outreach_detail(self, lead_id):
+        """What the email agent needs to write to the person of lead `lead_id`.
+
+        Refuses a lead the caller cannot read. The evidence is the lead's notes as
+        plain text.
+
+        Returns ``{"lead_id": id, "contact_name", "company_name", "job_title",
+        "evidence", "website", "linkedin", "country"}``, each a string or False.
+        """
+        lead = self.browse(lead_id).exists()
+        if not lead:
+            raise UserError(self.env._("Lead %(id)s does not exist.", id=lead_id))
+        lead.check_access("read")
+        evidence = html2plaintext(lead.description or "").strip()
+        return {
+            "lead_id": lead.id,
+            "contact_name": lead.contact_name or lead.partner_id.name or False,
+            "company_name": lead.partner_name
+            or lead.partner_id.commercial_company_name
+            or False,
+            "job_title": lead.function or False,
+            "evidence": evidence or False,
+            "website": lead.website or False,
+            "linkedin": lead.prospecting_linkedin or False,
+            "country": lead.country_id.name or False,
+        }
 
     def _prospecting_eligible_leads(self, skipped):
         """These leads that qualify on their own, counting the others in `skipped`."""
@@ -201,7 +231,9 @@ class CrmLead(models.Model):
         if "won" in leads.mapped("won_status"):
             return "won"
         first_stages = {}
-        for lead in leads.filtered(lambda lead: lead.type == "opportunity"):
+        for lead in leads.filtered(
+            lambda lead: lead.active and lead.type == "opportunity"
+        ):
             team = lead.team_id.id
             if team not in first_stages:
                 first_stages[team] = lead._prospecting_first_stage()
