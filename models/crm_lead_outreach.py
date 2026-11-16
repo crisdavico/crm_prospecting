@@ -52,7 +52,11 @@ class CrmLead(models.Model):
         ``campaign_without_guidelines``. Company reasons: ``already_emailed``,
         ``won``, ``opportunity_in_progress``.
         """
-        if not 1 <= limit <= MAX_OUTREACH_COMPANIES:
+        if (
+            not isinstance(limit, int)
+            or isinstance(limit, bool)
+            or not 1 <= limit <= MAX_OUTREACH_COMPANIES
+        ):
             raise UserError(
                 self.env._(
                     "The limit must be between 1 and %(max)s companies.",
@@ -115,6 +119,8 @@ class CrmLead(models.Model):
         blacklisted = set(
             self.env["mail.blacklist"]
             .sudo()
+            # An address taken off the blacklist is archived, not deleted.
+            .with_context(active_test=True)
             .search([("email", "in", [a for a in addresses.values() if a])])
             .mapped("email")
         )

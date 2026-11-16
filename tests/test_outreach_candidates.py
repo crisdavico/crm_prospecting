@@ -115,6 +115,15 @@ class TestOutreachCandidates(TransactionCase):
         self.assertNotIn(lead.id, self._lead_ids(result))
         self.assertEqual(result["skipped_leads"]["blacklisted"], 1)
 
+    def test_address_taken_off_the_blacklist_is_offered(self):
+        lead = self._lead("Acme", "Ana", "ana@acme.example")
+        self.env["mail.blacklist"].create(
+            {"email": "ana@acme.example", "active": False}
+        )
+        result = self._candidates()
+        self.assertIn(lead.id, self._lead_ids(result))
+        self.assertNotIn("blacklisted", result["skipped_leads"])
+
     def test_already_emailed_lead_is_skipped(self):
         lead = self._lead("Acme", "Ana", "ana@acme.example")
         lead.prospecting_outreach_date = fields.Datetime.now()
@@ -245,7 +254,7 @@ class TestOutreachCandidates(TransactionCase):
         self.assertEqual(len(result["companies"][0]["people"]), 2)
 
     def test_limit_above_ten_or_below_one_is_refused(self):
-        for limit in (0, 11):
+        for limit in (0, 11, None, "5", 2.5, True):
             with self.subTest(limit=limit), self.assertRaises(UserError):
                 self._candidates(limit=limit)
 
