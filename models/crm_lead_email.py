@@ -135,6 +135,11 @@ class CrmLead(models.Model):
             }
         return {**result, "status": "pending"}
 
+    def _prospecting_recipient_address(self):
+        """The address `prospecting_send_email` writes to, or False when none."""
+        self.ensure_one()
+        return self.partner_id.email_normalized or self.email_normalized or False
+
     def _prospecting_email_recipient(self):
         """`message_post` recipient arguments and the address, for this lead."""
         self.ensure_one()
