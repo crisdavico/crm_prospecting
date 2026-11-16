@@ -39,6 +39,12 @@ class CrmLead(models.Model):
         The same subject and body sent to the same address of the lead in the last
         24 hours is not sent again, unless that email failed.
 
+        In the same transaction, before the email is known to be sent, the lead gets
+        its outreach date, a lead becomes an opportunity without creating a partner,
+        and a lead without a stage or in the first stage of its sales team moves to
+        the stage marked Contacted. Any later stage is left alone. The send is
+        refused when no stage is marked Contacted. A duplicate changes nothing.
+
         Returns ``{"status": "queued" | "duplicate", "message_id": id, "email": str}``,
         where a duplicate answers the earlier message.
         """
@@ -49,6 +55,7 @@ class CrmLead(models.Model):
         if not lead.exists():
             raise UserError(self.env._("Lead %(id)s does not exist.", id=lead_id))
         lead.check_access("read")
+        lead.check_access("write")
         if not lead.active:
             raise UserError(
                 self.env._(
@@ -63,6 +70,7 @@ class CrmLead(models.Model):
         duplicate = lead._prospecting_email_duplicate(email, subject, html)
         if duplicate:
             return {"status": "duplicate", "message_id": duplicate.id, "email": email}
+        contacted = lead._prospecting_contacted_stage()
 
         context = {
             **clean_context(self.env.context),
@@ -84,6 +92,7 @@ class CrmLead(models.Model):
             **recipient,
             **{CUSTOMER_ONLY: True},
         )
+        lead._prospecting_mark_contacted(contacted)
         return {"status": "queued", "message_id": message.id, "email": email}
 
     @api.model
@@ -141,6 +150,45 @@ class CrmLead(models.Model):
                 "Lead %(id)s has no customer email: no email is sent.", id=self.id
             )
         )
+
+    def _prospecting_first_stage(self):
+        """The first stage of this lead's sales team, as Odoo gives new leads."""
+        self.ensure_one()
+        return self._stage_find(team_id=self.team_id.id)
+
+    def _prospecting_contacted_stage(self):
+        """The stage marked Contacted for this lead's sales team.
+
+        Raises a `UserError` when there is none, so nothing is sent.
+        """
+        self.ensure_one()
+        stage = self._stage_find(
+            team_id=self.team_id.id, domain=[("prospecting_contacted", "=", True)]
+        )
+        if not stage:
+            raise UserError(
+                self.env._(
+                    "No pipeline stage is marked Contacted (Prospecting): no email is "
+                    "sent to lead %(id)s.",
+                    id=self.id,
+                )
+            )
+        return stage
+
+    def _prospecting_mark_contacted(self, contacted):
+        """Date this lead, make it an opportunity and move it to `contacted`.
+
+        Only a lead without a stage or in its team's first stage is moved.
+        """
+        self.ensure_one()
+        movable = not self.stage_id or self.stage_id == self._prospecting_first_stage()
+        if self.type == "lead":
+            # Passing the lead's own partner keeps it; an empty one would clear it.
+            self.convert_opportunity(self.partner_id)
+        vals = {"prospecting_outreach_date": fields.Datetime.now()}
+        if movable:
+            vals["stage_id"] = contacted.id
+        self.write(vals)
 
     def _prospecting_email_lock(self):
         """Serialize sends to this lead, like `_prospecting_dedup_lock` for creates.

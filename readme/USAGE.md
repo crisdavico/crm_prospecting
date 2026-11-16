@@ -16,3 +16,16 @@ Administration > Settings access that Odoo requires for campaign stages. Leads
 the agent creates are linked to the campaign and carry their fit score in the
 _Prospecting_ tab of the lead; the agent's evidence goes in the lead's standard _Notes_
 tab (the `description` field).
+
+Before the email agent writes to a campaign's leads, fill in the campaign's _Email
+Guidelines_ in its _Prospecting_ tab: the language to write in, the tone, the structure
+and length, the call to action, what to avoid, example emails and any block to use word
+for word. The agent emails no lead of a campaign without guidelines. Do not put an
+opt-out line in the guidelines: it belongs in the sending user's signature, which every
+email carries.
+
+Mark one pipeline stage as _Contacted (Prospecting)_ in _CRM > Configuration > Stages_
+(for a sales team with its own stages, mark one of them). When the agent emails a lead,
+the lead becomes an opportunity, gets its _Outreach Date_ (in its _Prospecting_ tab) and,
+if it is in the first stage of its team, moves to that stage. The agent cannot email
+anyone until a stage is marked.

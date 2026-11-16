@@ -2,7 +2,7 @@
 # License AGPL-3.0-or-later (https://www.gnu.org/licenses/agpl-3.0.html).
 
 from odoo.exceptions import ValidationError
-from odoo.tests import TransactionCase, tagged
+from odoo.tests import TransactionCase, new_test_user, tagged
 
 
 @tagged("post_install", "-at_install")
@@ -163,3 +163,17 @@ class TestProspectingFields(TransactionCase):
         self.assertNotIn("prospecting_instructions", Campaign._fields)
         arch = Campaign.get_view(view_type="form")["arch"]
         self.assertIn('name="prospecting_goal"', arch)
+
+    def test_sales_user_writes_the_email_guidelines(self):
+        salesman = new_test_user(
+            self.env,
+            login="guidelines_salesman",
+            groups="sales_team.group_sale_salesman",
+        )
+        guidelines = "Write in Spanish (Argentina).\nTú, not usted.\nUnder 120 words."
+        self.campaign.with_user(salesman).prospecting_email_guidelines = guidelines
+        self.assertEqual(self.campaign.prospecting_email_guidelines, guidelines)
+
+    def test_campaign_form_shows_the_email_guidelines(self):
+        arch = self.env["utm.campaign"].get_view(view_type="form")["arch"]
+        self.assertIn('name="prospecting_email_guidelines"', arch)

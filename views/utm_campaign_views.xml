@@ -51,6 +51,14 @@
                         name="prospecting_goal"
                         placeholder="What this campaign aims to achieve, to focus the agent's lead search"
                     />
+                    <label
+                        for="prospecting_email_guidelines"
+                        string="Email Guidelines"
+                    />
+                    <field
+                        name="prospecting_email_guidelines"
+                        placeholder="Language, tone, structure, call to action, things to avoid, example emails and blocks to use word for word"
+                    />
                 </page>
             </xpath>
         </field>

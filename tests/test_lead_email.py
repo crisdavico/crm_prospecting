@@ -40,6 +40,9 @@ class TestLeadEmail(MailCase):
             groups="sales_team.group_sale_salesman",
         )
         cls.Lead = cls.env["crm.lead"].with_user(cls.bot)
+        cls.env["crm.stage"].create(
+            {"name": "Contacted", "sequence": 2, "prospecting_contacted": True}
+        )
         cls.lead = cls.env["crm.lead"].create(
             {
                 "name": "Acme",
@@ -337,9 +340,14 @@ class TestLeadEmailConcurrency(BaseCase):
 
     def test_a_send_whose_snapshot_misses_the_first_email_is_cancelled(self):
         db = sql_db.db_connect(get_db_name())
-        lead_id = None
+        lead_id = stage_id = None
         try:
             with db.cursor() as setup_cr:
+                stage_id = (
+                    api.Environment(setup_cr, SUPERUSER_ID, {})["crm.stage"]
+                    .create({"name": "Contacted", "prospecting_contacted": True})
+                    .id
+                )
                 lead_id = (
                     api.Environment(setup_cr, SUPERUSER_ID, {})["crm.lead"]
                     .create(
@@ -371,8 +379,9 @@ class TestLeadEmailConcurrency(BaseCase):
                 self.assertEqual(again["message_id"], sent["message_id"])
                 retry_cr.rollback()
         finally:
-            if lead_id:
-                with db.cursor() as cleanup_cr:
-                    api.Environment(cleanup_cr, SUPERUSER_ID, {})["crm.lead"].browse(
-                        lead_id
-                    ).unlink()
+            with db.cursor() as cleanup_cr:
+                env = api.Environment(cleanup_cr, SUPERUSER_ID, {})
+                if lead_id:
+                    env["crm.lead"].browse(lead_id).unlink()
+                if stage_id:
+                    env["crm.stage"].browse(stage_id).unlink()

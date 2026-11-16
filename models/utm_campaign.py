@@ -43,6 +43,12 @@ class UtmCampaign(models.Model):
         help="What this campaign aims to achieve. The agent reads it to focus its lead "
         "search.",
     )
+    prospecting_email_guidelines = fields.Text(
+        string="Email Guidelines",
+        help="How the email agent writes to this campaign's leads: language, tone, "
+        "structure, call to action, things to avoid, example emails and blocks to use "
+        "word for word. Without guidelines the agent emails none of its leads.",
+    )
 
     @api.constrains("prospecting_country_id", "prospecting_state_ids")
     def _check_prospecting_states_country(self):
