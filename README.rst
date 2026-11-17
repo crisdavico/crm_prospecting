@@ -138,13 +138,12 @@ Credits
 Authors
 -------
 
-* Eynes
 * Seedian
 
 Maintainers
 -----------
 
-This module is maintained by Eynes.
+This module is maintained by Seedian.
 
 Contact the maintainer through their official support channels in case you find
 any issues with this module.

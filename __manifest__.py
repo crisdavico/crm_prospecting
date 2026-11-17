@@ -7,7 +7,7 @@
     "category": "Sales/CRM",
     "summary": "Product profiles, campaign briefs and lead fields for an AI "
     "prospecting agent",
-    "author": "Eynes, Seedian",
+    "author": "Seedian",
     "website": "https://seedian.ai",
     "depends": ["crm", "product"],
     "data": [
