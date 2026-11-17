@@ -14,6 +14,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_crm_stage__prospecting_contacted
+msgid ""
+"A lead the email agent writes to moves to this stage, if it is in the first "
+"stage of its sales team. With several stages marked, the first one of the "
+"lead's team is used."
+msgstr ""
+
+#. module: crm_prospecting
 #: model_terms:ir.actions.act_window,help:crm_prospecting.prospecting_profile_action
 msgid ""
 "A profile describes, for one product, the ideal customer and the\n"
@@ -42,8 +50,28 @@ msgid "Buying Signals"
 msgstr ""
 
 #. module: crm_prospecting
+#: model:ir.model,name:crm_prospecting.model_crm_stage
+msgid "CRM Stages"
+msgstr ""
+
+#. module: crm_prospecting
 #: model_terms:ir.ui.view,arch_db:crm_prospecting.crm_lead_view_form
 msgid "CUIT"
+msgstr ""
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_outreach.py:0
+#: code:addons/crm_prospecting/models/utm_campaign.py:0
+msgid "Campaign %(id)s does not exist."
+msgstr ""
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/utm_campaign.py:0
+msgid ""
+"Campaign %(name)s has no email guidelines: no email is written for its "
+"leads. Fill them in on the campaign's Prospecting tab."
 msgstr ""
 
 #. module: crm_prospecting
@@ -69,6 +97,11 @@ msgstr ""
 #. module: crm_prospecting
 #: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
 msgid "Company Size"
+msgstr ""
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_stage__prospecting_contacted
+msgid "Contacted (Prospecting)"
 msgstr ""
 
 #. module: crm_prospecting
@@ -109,10 +142,19 @@ msgstr ""
 
 #. module: crm_prospecting
 #: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__display_name
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_stage__display_name
+#: model:ir.model.fields,field_description:crm_prospecting.field_mail_message__display_name
+#: model:ir.model.fields,field_description:crm_prospecting.field_mail_notification__display_name
 #: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__display_name
 #: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__display_name
 #: model:ir.model.fields,field_description:crm_prospecting.field_utm_stage__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_email_guidelines
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+msgid "Email Guidelines"
 msgstr ""
 
 #. module: crm_prospecting
@@ -131,12 +173,23 @@ msgid "How many leads the agent should find for this campaign."
 msgstr ""
 
 #. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_email_guidelines
+msgid ""
+"How the email agent writes to this campaign's leads: language, tone, "
+"structure, call to action, things to avoid, example emails and blocks to use"
+" word for word. Without guidelines the agent emails none of its leads."
+msgstr ""
+
+#. module: crm_prospecting
 #: model:ir.model.fields,help:crm_prospecting.field_crm_lead__prospecting_fit_score
 msgid "How well the company fits the campaign profile, from 0 to 100."
 msgstr ""
 
 #. module: crm_prospecting
 #: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__id
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_stage__id
+#: model:ir.model.fields,field_description:crm_prospecting.field_mail_message__id
+#: model:ir.model.fields,field_description:crm_prospecting.field_mail_notification__id
 #: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__id
 #: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__id
 #: model:ir.model.fields,field_description:crm_prospecting.field_utm_stage__id
@@ -159,6 +212,13 @@ msgid "Industry of the companies to look for, as set on contacts."
 msgstr ""
 
 #. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.utm_campaign_view_form
+msgid ""
+"Language, tone, structure, call to action, things to avoid, example emails "
+"and blocks to use word for word"
+msgstr ""
+
+#. module: crm_prospecting
 #: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__write_uid
 msgid "Last Updated by"
 msgstr ""
@@ -176,6 +236,7 @@ msgstr ""
 #. module: crm_prospecting
 #. odoo-python
 #: code:addons/crm_prospecting/models/crm_lead_email.py:0
+#: code:addons/crm_prospecting/models/crm_lead_outreach.py:0
 msgid "Lead %(id)s does not exist."
 msgstr ""
 
@@ -203,14 +264,32 @@ msgid ""
 msgstr ""
 
 #. module: crm_prospecting
+#: model:ir.model,name:crm_prospecting.model_mail_message
+msgid "Message"
+msgstr ""
+
+#. module: crm_prospecting
 #. odoo-python
 #: code:addons/crm_prospecting/models/crm_lead_email.py:0
 msgid "Message %(id)s is not an email to a lead's customer."
 msgstr ""
 
 #. module: crm_prospecting
+#: model:ir.model,name:crm_prospecting.model_mail_notification
+msgid "Message Notifications"
+msgstr ""
+
+#. module: crm_prospecting
 #: model:ir.model.fields,field_description:crm_prospecting.field_prospecting_profile__name
 msgid "Name"
+msgstr ""
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_email.py:0
+msgid ""
+"No pipeline stage is marked Contacted (Prospecting): no email is sent to "
+"lead %(id)s."
 msgstr ""
 
 #. module: crm_prospecting
@@ -226,6 +305,16 @@ msgstr ""
 #. module: crm_prospecting
 #: model:ir.model.fields,field_description:crm_prospecting.field_utm_stage__prospecting_enabled
 msgid "Open for Prospecting"
+msgstr ""
+
+#. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_mail_server_id
+msgid "Outgoing Mail Server"
+msgstr ""
+
+#. module: crm_prospecting
+#: model_terms:ir.ui.view,arch_db:crm_prospecting.crm_lead_view_form
+msgid "Outreach Date"
 msgstr ""
 
 #. module: crm_prospecting
@@ -311,6 +400,11 @@ msgid "Prospecting Linkedin Key"
 msgstr ""
 
 #. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_crm_lead__prospecting_outreach_date
+msgid "Prospecting Outreach Date"
+msgstr ""
+
+#. module: crm_prospecting
 #: model:ir.model,name:crm_prospecting.model_prospecting_profile
 #: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_profile_id
 msgid "Prospecting Profile"
@@ -352,6 +446,13 @@ msgid "Run Reference"
 msgstr ""
 
 #. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_mail_server_id
+msgid ""
+"Server the email agent sends this campaign's emails through. Empty: Odoo "
+"picks the server as for any other email."
+msgstr ""
+
+#. module: crm_prospecting
 #: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_company_size
 msgid "Size of the companies to look for, for example by employee count."
 msgstr ""
@@ -385,6 +486,12 @@ msgstr ""
 #. odoo-python
 #: code:addons/crm_prospecting/models/crm_lead_email.py:0
 msgid "The email subject is required."
+msgstr ""
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/crm_lead_outreach.py:0
+msgid "The limit must be between 1 and %(max)s companies."
 msgstr ""
 
 #. module: crm_prospecting
@@ -439,6 +546,11 @@ msgstr ""
 #. module: crm_prospecting
 #: model:ir.model.fields,help:crm_prospecting.field_prospecting_profile__description
 msgid "What this profile is: the segment or angle it covers for the product."
+msgstr ""
+
+#. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_crm_lead__prospecting_outreach_date
+msgid "When the email agent last emailed this lead."
 msgstr ""
 
 #. module: crm_prospecting
