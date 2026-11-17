@@ -177,3 +177,17 @@ class TestProspectingFields(TransactionCase):
     def test_campaign_form_shows_the_email_guidelines(self):
         arch = self.env["utm.campaign"].get_view(view_type="form")["arch"]
         self.assertIn('name="prospecting_email_guidelines"', arch)
+
+    def test_admin_form_shows_the_mail_server_only_to_admins(self):
+        Campaign = self.env["utm.campaign"]
+        domain = Campaign._fields["prospecting_mail_server_id"].domain
+        self.assertEqual(domain, [("owner_user_id", "=", False)])
+        arch = Campaign.get_view(view_type="form")["arch"]
+        self.assertIn('name="prospecting_mail_server_id"', arch)
+        salesman = new_test_user(
+            self.env,
+            login="mail_server_salesman",
+            groups="sales_team.group_sale_salesman",
+        )
+        arch = Campaign.with_user(salesman).get_view(view_type="form")["arch"]
+        self.assertNotIn('name="prospecting_mail_server_id"', arch)

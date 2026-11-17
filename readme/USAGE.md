@@ -24,6 +24,12 @@ for word. The agent emails no lead of a campaign without guidelines. Do not put 
 opt-out line in the guidelines: it belongs in the sending user's signature, which every
 email carries.
 
+To send a campaign's emails through a specific outgoing mail server, an administrator
+picks it in the campaign's _Outgoing Mail Server_ field (_Prospecting_ tab, visible only
+with Administration > Settings access). Servers that belong to a user are not offered.
+Without one, Odoo picks the server as for any other email. When the server only accepts
+some senders (its _FROM Filtering_), Odoo rewrites the sender as it always does.
+
 Mark one pipeline stage as _Contacted (Prospecting)_ in _CRM > Configuration > Stages_
 (for a sales team with its own stages, mark one of them). When the agent emails a lead,
 the lead becomes an opportunity, gets its _Outreach Date_ (in its _Prospecting_ tab) and,

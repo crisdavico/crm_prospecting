@@ -3,11 +3,11 @@
 
 {
     "name": "CRM Prospecting",
-    "version": "19.0.1.4.0",
+    "version": "19.0.1.5.0",
     "category": "Sales/CRM",
     "summary": "Product profiles, campaign briefs and lead fields for an AI "
     "prospecting agent",
-    "author": "Eynes, Seedian",
+    "author": "Seedian",
     "website": "https://seedian.ai",
     "depends": ["crm", "product"],
     "data": [

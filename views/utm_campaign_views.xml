@@ -44,6 +44,11 @@
                                 options="{'no_create': True}"
                             />
                             <field name="prospecting_city" string="City" />
+                            <field
+                                name="prospecting_mail_server_id"
+                                groups="base.group_system"
+                                options="{'no_create': True}"
+                            />
                         </group>
                     </group>
                     <label for="prospecting_goal" string="Goal" />
