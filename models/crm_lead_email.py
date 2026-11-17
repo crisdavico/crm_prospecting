@@ -39,6 +39,9 @@ class CrmLead(models.Model):
         The same subject and body sent to the same address of the lead in the last
         24 hours is not sent again, unless that email failed.
 
+        The email goes through the outgoing mail server of the lead's campaign, when
+        the campaign has one; otherwise Odoo picks the server.
+
         In the same transaction, before the email is known to be sent, the lead gets
         its outreach date, a lead becomes an opportunity without creating a partner,
         and a lead without a stage or in the first stage of its sales team moves to
@@ -71,6 +74,8 @@ class CrmLead(models.Model):
         if duplicate:
             return {"status": "duplicate", "message_id": duplicate.id, "email": email}
         contacted = lead._prospecting_contacted_stage()
+        # The campaign's server id only: the caller may not read mail servers.
+        mail_server = lead.campaign_id.prospecting_mail_server_id
 
         context = {
             **clean_context(self.env.context),
@@ -87,6 +92,7 @@ class CrmLead(models.Model):
             message_type="comment",
             subtype_xmlid="mail.mt_comment",
             author_id=self.env.user.partner_id.id,
+            mail_server_id=mail_server.id,
             force_send=True,
             send_after_commit=True,
             **recipient,

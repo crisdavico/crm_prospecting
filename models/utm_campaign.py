@@ -54,6 +54,13 @@ class UtmCampaign(models.Model):
         "structure, call to action, things to avoid, example emails and blocks to use "
         "word for word. Without guidelines the agent emails none of its leads.",
     )
+    prospecting_mail_server_id = fields.Many2one(
+        comodel_name="ir.mail_server",
+        string="Outgoing Mail Server",
+        domain=[("owner_user_id", "=", False)],
+        help="Server the email agent sends this campaign's emails through. Empty: "
+        "Odoo picks the server as for any other email.",
+    )
 
     @api.model
     def prospecting_outreach_brief(self, campaign_id):

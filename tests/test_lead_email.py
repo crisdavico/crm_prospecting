@@ -130,6 +130,37 @@ class TestLeadEmail(MailCase):
         message = self.env["mail.message"].browse(result["message_id"])
         self.assertEqual(message.partner_ids, self.customer)
 
+    def test_email_goes_through_the_campaign_mail_server(self):
+        server = self.env["ir.mail_server"].create(
+            {"name": "Outreach", "smtp_host": "smtp.outreach.example"}
+        )
+        campaign = self.env["utm.campaign"].create(
+            {"title": "Outreach", "prospecting_mail_server_id": server.id}
+        )
+        self.lead.campaign_id = campaign
+
+        result = self._send()
+
+        message = self.env["mail.message"].browse(result["message_id"])
+        self.assertEqual(message.mail_server_id, server)
+        self.assertEqual(len(self._sent_to("agustin.perez@acme.example")), 1)
+        self.assertEqual(
+            [
+                call.kwargs["mail_server_id"]
+                for call in self.send_email_mocked.call_args_list
+            ],
+            [server.id],
+        )
+
+    def test_campaign_without_a_mail_server_leaves_the_server_to_odoo(self):
+        self.lead.campaign_id = self.env["utm.campaign"].create({"title": "Plain"})
+
+        result = self._send()
+
+        message = self.env["mail.message"].browse(result["message_id"])
+        self.assertFalse(message.mail_server_id)
+        self.assertEqual(len(self._sent_to("agustin.perez@acme.example")), 1)
+
     def test_status_is_sent_once_the_smtp_server_accepts_it(self):
         result = self._send()
         status = self.Lead.prospecting_email_status(result["message_id"])
