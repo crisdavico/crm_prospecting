@@ -24,6 +24,10 @@ class TestLeadOutreach(MailCase):
         )
         cls.Lead = cls.env["crm.lead"].with_user(cls.bot)
         Stage = cls.env["crm.stage"]
+        # Only this test's stage is Contacted, whatever the database flags.
+        Stage.search([("prospecting_contacted", "=", True)]).write(
+            {"prospecting_contacted": False}
+        )
         cls.first_stage = cls.env["crm.lead"]._stage_find()
         cls.contacted = Stage.create(
             {
