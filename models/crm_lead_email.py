@@ -1,6 +1,7 @@
 # Copyright 2026 Seedian
 # License AGPL-3.0-or-later (https://www.gnu.org/licenses/agpl-3.0.html).
 
+import re
 from datetime import timedelta
 
 from markupsafe import Markup
@@ -19,6 +20,9 @@ FAILED_EMAIL_STATUSES = frozenset({"bounce", "exception", "canceled"})
 
 # Notification parameter of `prospecting_send_email`: notify no customer follower.
 CUSTOMER_ONLY = "prospecting_customer_only"
+
+# A subject that already answers an email, as email clients write it.
+REPLY_PREFIX = re.compile(r"^\s*re\s*:", re.IGNORECASE)
 
 
 class CrmLead(models.Model):
@@ -249,6 +253,61 @@ class CrmLead(models.Model):
             ):
                 return message
         return self.env["mail.message"]
+
+    def message_post(self, **kwargs):
+        """A discussion message without a server goes through the campaign's server.
+
+        "Send message" and the composer pass no server, so replies to the customer
+        leave from the same server, and sender, as the agent's first email.
+        """
+        if len(self) == 1 and not kwargs.get("mail_server_id"):
+            server = self.sudo().campaign_id.prospecting_mail_server_id
+            if server and self._prospecting_is_discussion(kwargs):
+                kwargs["mail_server_id"] = server.id
+        return super().message_post(**kwargs)
+
+    def _prospecting_is_discussion(self, post_values):
+        """Whether `message_post(**post_values)` posts a message, not a note."""
+        if post_values.get("message_type") != "comment":
+            return False
+        subtype_id = post_values.get("subtype_id")
+        if not subtype_id and post_values.get("subtype_xmlid"):
+            subtype_id = self.env["ir.model.data"]._xmlid_to_res_id(
+                post_values["subtype_xmlid"]
+            )
+        return subtype_id == self.env["ir.model.data"]._xmlid_to_res_id(
+            "mail.mt_comment"
+        )
+
+    def _message_compute_subject(self):
+        """On a campaign lead, "Re: " the subject of its latest email thread.
+
+        Gmail and other clients keep a reply in the customer's thread only when the
+        subject matches, and "Send message" sends no subject of its own.
+        """
+        subject = super()._message_compute_subject()
+        if not self.campaign_id:
+            return subject
+        last = (
+            self.env["mail.message"]
+            .sudo()
+            .search(
+                [
+                    ("model", "=", self._name),
+                    ("res_id", "=", self.id),
+                    ("message_type", "in", ("email", "comment")),
+                    ("subtype_id", "=", self.env.ref("mail.mt_comment").id),
+                    ("subject", "not in", (False, "")),
+                ],
+                order="id desc",
+                limit=1,
+            )
+        )
+        if not last:
+            return subject
+        if REPLY_PREFIX.match(last.subject):
+            return last.subject
+        return f"Re: {last.subject}"
 
     def _get_notify_valid_parameters(self):
         return super()._get_notify_valid_parameters() | {CUSTOMER_ONLY}

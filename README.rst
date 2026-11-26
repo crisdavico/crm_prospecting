@@ -123,8 +123,17 @@ email carries.
 To send a campaign's emails through a specific outgoing mail server, an administrator
 picks it in the campaign's *Outgoing Mail Server* field (*Prospecting* tab, visible only
 with Administration > Settings access). Servers that belong to a user are not offered.
-Without one, Odoo picks the server as for any other email. When the server only accepts
-some senders (its *FROM Filtering*), Odoo rewrites the sender as it always does.
+Messages sent to the customer from the lead's chatter (*Send message*) or its full
+composer go through that server too, unless the composer names another one; internal
+notes do not. Without one, Odoo picks the server as for any other email. When the
+server only accepts some senders (its *FROM Filtering*), Odoo rewrites the sender as it
+always does.
+
+A reply sent from a campaign lead's chatter keeps the customer's email thread: without
+a subject of its own, it takes the subject of the lead's latest email or message, with
+"Re: " in front when it does not start with it already, and the full composer suggests
+that subject. Internal notes do not count. A lead without a campaign, or without any
+email yet, keeps its name as the subject, as in Odoo.
 
 To collect every reply to a campaign's leads in one mailbox, an administrator fills in
 the campaign's *Reply-To* (same tab, same access) with one email address. Every email on
