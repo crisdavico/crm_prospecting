@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.mail import email_normalize
 
 
 def text_lines(value):
@@ -61,6 +62,52 @@ class UtmCampaign(models.Model):
         help="Server the email agent sends this campaign's emails through. Empty: "
         "Odoo picks the server as for any other email.",
     )
+    prospecting_reply_to = fields.Char(
+        string="Reply-To",
+        groups="base.group_system",
+        # Copied by `copy_data` for admins only: others may not read it.
+        copy=False,
+        help="Address every email on this campaign's leads asks replies to go to, "
+        "whoever sends it: the email agent or anyone writing from the lead. Odoo "
+        "must fetch this mailbox so replies land on the lead. Empty: Odoo picks the "
+        "Reply-To as for any other lead.",
+    )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            self._prospecting_clean_reply_to(vals)
+        return super().create(vals_list)
+
+    def write(self, vals):
+        self._prospecting_clean_reply_to(vals)
+        return super().write(vals)
+
+    def copy_data(self, default=None):
+        vals_list = super().copy_data(default=default)
+        if self.env.su or self.env.user.has_group("base.group_system"):
+            for campaign, vals in zip(self, vals_list, strict=True):
+                vals.setdefault("prospecting_reply_to", campaign.prospecting_reply_to)
+        return vals_list
+
+    @api.model
+    def _prospecting_clean_reply_to(self, vals):
+        """Store the Reply-To as its bare address; an invalid one fails the check."""
+        value = vals.get("prospecting_reply_to")
+        if value:
+            vals["prospecting_reply_to"] = email_normalize(value, strict=True) or value
+
+    @api.constrains("prospecting_reply_to")
+    def _check_prospecting_reply_to(self):
+        for campaign in self:
+            value = campaign.prospecting_reply_to
+            if value and not email_normalize(value, strict=True):
+                raise ValidationError(
+                    self.env._(
+                        "The Reply-To of campaign %(name)s must be one email address.",
+                        name=campaign.display_name,
+                    )
+                )
 
     @api.model
     def prospecting_outreach_brief(self, campaign_id):

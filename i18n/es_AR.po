@@ -40,6 +40,20 @@ msgid "Active"
 msgstr "Activo"
 
 #. module: crm_prospecting
+#: model:ir.model.fields,help:crm_prospecting.field_utm_campaign__prospecting_reply_to
+msgid ""
+"Address every email on this campaign's leads asks replies to go to, whoever "
+"sends it: the email agent or anyone writing from the lead. Odoo must fetch "
+"this mailbox so replies land on the lead. Empty: Odoo picks the Reply-To as "
+"for any other lead."
+msgstr ""
+"Dirección a la que cada correo de los leads de esta campaña pide que vayan "
+"las respuestas, lo envíe quien lo envíe: el agente de correo o cualquiera "
+"que escriba desde el lead. Odoo debe leer este buzón para que las respuestas"
+" queden en el lead. Vacío: Odoo elige el Reply-To como para cualquier otro "
+"lead."
+
+#. module: crm_prospecting
 #: model:ir.model.fields,help:crm_prospecting.field_crm_lead__prospecting_run_ref
 msgid "Agent thread or run that produced the lead."
 msgstr "Hilo o ejecución del agente que generó la iniciativa."
@@ -466,6 +480,11 @@ msgstr ""
 " por línea."
 
 #. module: crm_prospecting
+#: model:ir.model.fields,field_description:crm_prospecting.field_utm_campaign__prospecting_reply_to
+msgid "Reply-To"
+msgstr "Responder a"
+
+#. module: crm_prospecting
 #: model_terms:ir.ui.view,arch_db:crm_prospecting.crm_lead_view_form
 msgid "Run Reference"
 msgstr "Referencia de ejecución"
@@ -511,6 +530,14 @@ msgid "Tax ID of the company, used to detect duplicate leads."
 msgstr ""
 "Identificación fiscal de la empresa, usada para detectar iniciativas "
 "duplicadas."
+
+#. module: crm_prospecting
+#. odoo-python
+#: code:addons/crm_prospecting/models/utm_campaign.py:0
+msgid "The Reply-To of campaign %(name)s must be one email address."
+msgstr ""
+"\"Responder a\" de la campaña %(name)s debe ser una sola dirección de "
+"correo."
 
 #. module: crm_prospecting
 #. odoo-python

@@ -8,6 +8,7 @@ from markupsafe import Markup
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import SQL, formataddr, html2plaintext
+from odoo.tools.mail import email_normalize
 from odoo.tools.misc import clean_context
 
 # How long an email to a lead blocks sending the same subject and body again.
@@ -273,6 +274,28 @@ class CrmLead(models.Model):
             or not recipient["share"]
             or recipient["id"] in direct
         ]
+
+    def _notify_get_reply_to(self, default=None, author_id=False):
+        """The campaign's Reply-To first: `crm` answers from the sales team here."""
+        reply_to = super()._notify_get_reply_to(default=default, author_id=author_id)
+        return self._prospecting_reply_to(reply_to, dict.fromkeys(self.ids, author_id))
+
+    def _notify_get_reply_to_batch(self, defaults=None, author_ids=None):
+        """The campaign's Reply-To first: the batch and mass-mail composer ask here."""
+        reply_to = super()._notify_get_reply_to_batch(
+            defaults=defaults, author_ids=author_ids
+        )
+        return self._prospecting_reply_to(reply_to, author_ids or {})
+
+    def _prospecting_reply_to(self, reply_to, author_ids):
+        """`reply_to` with the Reply-To of each lead's campaign, when it has one."""
+        for lead in self.sudo():
+            address = email_normalize(lead.campaign_id.prospecting_reply_to)
+            if address:
+                reply_to[lead.id] = self._notify_get_reply_to_formatted_email(
+                    address, author_id=author_ids.get(lead.id, False)
+                )
+        return reply_to
 
 
 class MailMessage(models.Model):
