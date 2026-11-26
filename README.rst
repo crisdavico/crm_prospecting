@@ -126,6 +126,16 @@ with Administration > Settings access). Servers that belong to a user are not of
 Without one, Odoo picks the server as for any other email. When the server only accepts
 some senders (its *FROM Filtering*), Odoo rewrites the sender as it always does.
 
+To collect every reply to a campaign's leads in one mailbox, an administrator fills in
+the campaign's *Reply-To* (same tab, same access) with one email address. Every email on
+its leads then asks replies to go there: the agent's emails and anything anyone sends
+from the lead, from its chatter or its full composer. Set up an incoming mail server in
+Odoo that fetches that mailbox, without a default model: replies land on the lead they
+answer, and other mail there is left out. Use a mailbox of its own, not the sending
+mailbox, so Odoo never reads a mailbox that a warm-up tool also uses. Without a
+Reply-To, Odoo picks it as for any other lead. Odoo stores only the bare address.
+Duplicating a campaign keeps its Reply-To only when an administrator duplicates it.
+
 Mark one pipeline stage as *Contacted (Prospecting)* in *CRM > Configuration > Stages*
 (for a sales team with its own stages, mark one of them). When the agent emails a lead,
 the lead becomes an opportunity, gets its *Outreach Date* (in its *Prospecting* tab) and,

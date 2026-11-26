@@ -49,6 +49,11 @@
                                 groups="base.group_system"
                                 options="{'no_create': True}"
                             />
+                            <field
+                                name="prospecting_reply_to"
+                                groups="base.group_system"
+                                widget="email"
+                            />
                         </group>
                     </group>
                     <label for="prospecting_goal" string="Goal" />
