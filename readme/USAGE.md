@@ -49,6 +49,22 @@ mailbox, so Odoo never reads a mailbox that a warm-up tool also uses. Without a
 Reply-To, Odoo picks it as for any other lead. Odoo stores only the bare address.
 Duplicating a campaign keeps its Reply-To only when an administrator duplicates it.
 
+The agent writes to a lead's email without creating a contact. The contact comes when
+the customer answers: when a reply lands on a campaign lead that has no customer yet,
+comes from the lead's own email address, and is not an automatic reply (an
+`Auto-Submitted` header other than "no", as out-of-office answers carry), the lead gets
+its customer and the reply is shown as written by them. That customer is the contact
+that already has the lead's email; otherwise Odoo creates a contact from the lead
+(contact name, email, phone, job position, address) under the company named as the
+lead's _Company Name_. That company is reused when a company with the same name exists,
+ignoring case and surrounding spaces, and created otherwise; a new company gets the
+lead's address, website and notes and the campaign's industry, never the person's
+email, phone or job position.
+A lead without a contact name gets a contact named after its email address under that
+company, so the lead keeps its own email. A reply from any other
+address, an automatic reply, or a lead that already has a customer or no campaign
+changes no contact.
+
 Mark one pipeline stage as _Contacted (Prospecting)_ in _CRM > Configuration > Stages_
 (for a sales team with its own stages, mark one of them). When the agent emails a lead,
 the lead becomes an opportunity, gets its _Outreach Date_ (in its _Prospecting_ tab) and,

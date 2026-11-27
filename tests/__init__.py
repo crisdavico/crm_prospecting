@@ -12,3 +12,4 @@ from . import test_outreach_candidates
 from . import test_outreach_brief
 from . import test_lead_reply_to
 from . import test_lead_reply_thread
+from . import test_lead_partner_on_reply
